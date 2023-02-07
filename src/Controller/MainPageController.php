@@ -23,7 +23,6 @@ class MainPageController extends AbstractController
             'products' => $products
         ]);
     }
-
     private function retrieveAllProduct() {
 
         return $this->em->getRepository(Product::class)->findAll();
