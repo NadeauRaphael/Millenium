@@ -6,11 +6,12 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\Table(name:'Products')]
 class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name:'idProduct')]
     private ?int $idProduct = null;
 
     #[ORM\Column(length: 50)]
@@ -19,16 +20,16 @@ class Product
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $category = null;
+    #[ORM\Column(length: 100,name:'IdCategory')]
+    private ?int $IdCategory = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name:'stockQuantity')]
     private ?int $stockQuantity = null;
 
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true, name:'imgPath')]
     private ?string $imgPath = null;
 
 
@@ -62,16 +63,8 @@ class Product
 
     public function getCategory(): ?string
     {
-        return $this->category;
+        return $this->IdCategory;
     }
-
-    public function setCategory(string $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
     public function getStockQuantity(): ?int
     {
         return $this->stockQuantity;
