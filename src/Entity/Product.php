@@ -21,7 +21,7 @@ class Product
     private ?float $price = null;
 
     #[ORM\ManyToOne(targetEntity: Categories::class, inversedBy: "Products", cascade: ["persist"])]
-    #[ORM\JoinColumn(name: 'idCategorie', referencedColumnName: 'idCategorie')]
+    #[ORM\JoinColumn(name: 'idCategory', referencedColumnName: 'idCategory')]
     private $category;
 
     #[ORM\Column(name:'stockQuantity')]

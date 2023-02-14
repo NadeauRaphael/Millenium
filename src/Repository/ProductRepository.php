@@ -38,22 +38,18 @@ class ProductRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    // TODO : Adapter au code
-    public function findWithCriteria($role, $searchField){
+    public function findWithCriteria($category, $searchField){
         $queryBuilder =  $this->createQueryBuilder('c');
-
         if($searchField != null){
             $queryBuilder->andWhere('c.name LIKE :searchFilter')
                 ->orWhere('c.description LIKE :searchFilter')
                 ->setParameter('searchFilter', '%'.$searchField.'%');
         }
-
-        if($role != null){
-            $queryBuilder->andWhere('c.mainRole = :mainRole')
-                ->setParameter('mainRole', $role);
+        if($category != null){
+            $queryBuilder->andWhere('c.category = :category')
+                ->setParameter('category', $category);
 
         }
-
         return $queryBuilder->getQuery()->getResult();
     }
 
