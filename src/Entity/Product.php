@@ -20,8 +20,9 @@ class Product
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\Column(length: 100,name:'IdCategory')]
-    private ?int $IdCategory = null;
+    #[ORM\ManyToOne(targetEntity: Categories::class, inversedBy: "Products", cascade: ["persist"])]
+    #[ORM\JoinColumn(name: 'idCategorie', referencedColumnName: 'idCategorie')]
+    private $category;
 
     #[ORM\Column(name:'stockQuantity')]
     private ?int $stockQuantity = null;
@@ -61,9 +62,9 @@ class Product
         return $this;
     }
 
-    public function getCategory(): ?string
+    public function getCategory(): ?Categories
     {
-        return $this->IdCategory;
+        return $this->category;
     }
     public function getStockQuantity(): ?int
     {
