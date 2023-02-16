@@ -29,6 +29,16 @@ class MainPageController extends AbstractController
             'categories' => $categories
         ]);
     }
+    #[Route('/product/{idProduct}', name: 'product_modal')]
+    public function infoProduct($idProduct, Request $request, ManagerRegistry $doctrine): Response
+    {
+        $this -> em = $doctrine -> getManager();
+        $product = $this->em->getRepository(Product::class)->find($idProduct);
+
+        return $this->render('Catalog/product.modal.twig', [
+            'product' => $product , 
+        ]);
+    }
     private function retrieveAllProduct($category, $searchField) {
         return $this->em->getRepository(Product::class)->findWithCriteria($category, $searchField);
     }
