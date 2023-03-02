@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Categories;
+use App\Entity\Category;
 use App\Entity\Product;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,6 +43,6 @@ class MainPageController extends AbstractController
         return $this->em->getRepository(Product::class)->findWithCriteria($category, $searchField);
     }
     private function retrieveAllCategories(){
-        return $this-> em -> getRepository(Categories::class) -> findAll();
+        return $this-> em -> getRepository(Category::class) -> findAll();
     } 
 }

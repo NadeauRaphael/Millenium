@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Categories;
+use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,14 +14,14 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Categories[]    findAll()
  * @method Categories[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CategoriesRepository extends ServiceEntityRepository
+class CategoryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Categories::class);
     }
 
-    public function save(Categories $entity, bool $flush = false): void
+    public function save(Category $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class CategoriesRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Categories $entity, bool $flush = false): void
+    public function remove(Category $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
