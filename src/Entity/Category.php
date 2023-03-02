@@ -18,7 +18,7 @@ class Category
     #[ORM\Column(length: 100)]
     private ?string $category = null;
 
-    #[ORM\OneToMany(targetEntity:Product::class, mappedBy:"category", fetch:"LAZY")]
+    #[ORM\OneToMany(targetEntity:Product::class, mappedBy:"categories", fetch:"LAZY")]
     private $product;
 
 
