@@ -20,7 +20,7 @@ class Product
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\ManyToOne(targetEntity: Categories::class, inversedBy: "Products", cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: "Products", cascade: ["persist"])]
     #[ORM\JoinColumn(name: 'idCategory', referencedColumnName: 'idCategory')]
     private $category;
 
@@ -62,7 +62,7 @@ class Product
         return $this;
     }
 
-    public function getCategory(): ?Categories
+    public function getCategory(): ?Category
     {
         return $this->category;
     }

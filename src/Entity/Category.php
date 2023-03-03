@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoriesRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CategoriesRepository::class)]
-class Categories
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\Table(name:'Categories')]
+class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,7 +18,7 @@ class Categories
     #[ORM\Column(length: 100)]
     private ?string $category = null;
 
-    #[ORM\OneToMany(targetEntity:Product::class, mappedBy:"category", fetch:"LAZY")]
+    #[ORM\OneToMany(targetEntity:Product::class, mappedBy:"categories", fetch:"LAZY")]
     private $product;
 
 
