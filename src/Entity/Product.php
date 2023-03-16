@@ -43,24 +43,24 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+    // public function setName(string $name): self
+    // {
+    //     $this->name = $name;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): self
-    {
-        $this->price = $price;
+    // public function setPrice(float $price): self
+    // {
+    //     $this->price = $price;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getCategory(): ?Category
     {
@@ -71,34 +71,34 @@ class Product
         return $this->stockQuantity;
     }
 
-    public function setStockQuantity(int $stockQuantity): self
-    {
-        $this->stockQuantity = $stockQuantity;
+    // public function setStockQuantity(int $stockQuantity): self
+    // {
+    //     $this->stockQuantity = $stockQuantity;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
+    // public function setDescription(?string $description): self
+    // {
+    //     $this->description = $description;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getImgPath(): ?string
     {
         return $this->imgPath;
     }
 
-    public function setImgPath(?string $imgPath): self
-    {
-        $this->imgPath = $imgPath;
+    // public function setImgPath(?string $imgPath): self
+    // {
+    //     $this->imgPath = $imgPath;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }
