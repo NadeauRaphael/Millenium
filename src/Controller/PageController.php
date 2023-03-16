@@ -11,8 +11,6 @@ class PageController extends AbstractController
     #[Route('/about', name: 'about')]
     public function index(): Response
     {
-        return $this->render('About/index.html.twig', [
-            'controller_name' => 'PageController',
-        ]);
+        return $this->render('About/index.html.twig');
     }
 }
