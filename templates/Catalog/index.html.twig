@@ -120,7 +120,7 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<a href="shop-single.html" class="h3 text-decoration-none">{{product.name}}</a>
+									<a href="{{path('product_modal', {idProduct: product.idProduct})}}" class="product-modal h3 text-decoration-none">{{product.name}}</a>
 									<ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
 										<li class="pt-2">
 											<span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
