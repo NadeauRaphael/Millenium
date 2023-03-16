@@ -38,6 +38,20 @@ class ProductRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findWithCriteria($category, $searchField){
+        $queryBuilder =  $this->createQueryBuilder('c');
+        if($searchField != null){
+            $queryBuilder->andWhere('c.name LIKE :searchFilter')
+                ->orWhere('c.description LIKE :searchFilter')
+                ->setParameter('searchFilter', '%'.$searchField.'%');
+        }
+        if($category != null){
+            $queryBuilder->andWhere('c.category = :category')
+                ->setParameter('category', $category);
+
+        }
+        return $queryBuilder->getQuery()->getResult();
+    }
 
 //    /**
 //     * @return Product[] Returns an array of Product objects

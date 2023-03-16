@@ -1,0 +1,25 @@
+<div class="modal-header">
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+	<div>
+			<div class="card-body">
+				<h1 class="h2"><b>{{product.name}}</b></h1>
+				<p class="h3 py-2">Price : {{product.price}}$</p>
+				<ul class="list-inline">
+					<li class="list-inline-item">
+						<h6>Category : {{product.category.category}}</h6> 
+					</li>
+				</ul>
+
+				<h6>Description:</h6>
+				<p>{{product.Description}}</p>
+				<ul class="list-inline">
+					<li class="list-inline-item">
+						<h6>Stocks : {{product.stockQuantity}}</h6>
+					</li>
+				</ul>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		</div>

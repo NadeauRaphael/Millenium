@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Product;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 class MainPageController extends AbstractController
@@ -12,20 +14,35 @@ class MainPageController extends AbstractController
     private $em = null;
 
     #[Route('/', name: 'Catalog')]
-    public function index(ManagerRegistry $doctrine): Response
+    public function index(Request $request,ManagerRegistry $doctrine): Response
     {
         $this-> em = $doctrine -> getManager();
 
-        $products = $this->retrieveAllProduct();
+        $category = $request->query->get('category');
+        $searchField = $request->request->get('search_field');
 
+        $categories = $this->retrieveAllCategories();
+        $products = $this->retrieveAllProduct($category, $searchField);
 
         return $this->render('Catalog/index.html.twig', [
-            'products' => $products
+            'products' => $products,
+            'categories' => $categories
         ]);
     }
-    private function retrieveAllProduct() {
+    #[Route('/product/{idProduct}', name: 'product_modal')]
+    public function infoProduct($idProduct, Request $request, ManagerRegistry $doctrine): Response
+    {
+        $this -> em = $doctrine -> getManager();
+        $product = $this->em->getRepository(Product::class)->find($idProduct);
 
-        return $this->em->getRepository(Product::class)->findAll();
-        
+        return $this->render('Catalog/product.modal.twig', [
+            'product' => $product , 
+        ]);
     }
+    private function retrieveAllProduct($category, $searchField) {
+        return $this->em->getRepository(Product::class)->findWithCriteria($category, $searchField);
+    }
+    private function retrieveAllCategories(){
+        return $this-> em -> getRepository(Category::class) -> findAll();
+    } 
 }
