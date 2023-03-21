@@ -18,6 +18,7 @@ class MainPageController extends AbstractController
     {
         $this-> em = $doctrine -> getManager();
 
+
         $category = $request->query->get('category');
         $searchField = $request->request->get('search_field');
 
@@ -27,7 +28,7 @@ class MainPageController extends AbstractController
         return $this->render('Catalog/index.html.twig', [
             'products' => $products,
             'categories' => $categories
-        ]);
+            ]);
     }
     #[Route('/product/{idProduct}', name: 'product_modal')]
     public function infoProduct($idProduct, Request $request, ManagerRegistry $doctrine): Response

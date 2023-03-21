@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cart;
 use App\Entity\Product;
+use App\Entity\Purchase;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,6 @@ class CartController extends AbstractController
     #[Route('/cart', name: 'app_cart')]
     public function index(Request $request): Response
     {
-
         $this -> initSession($request);
         $session = $request->getSession();
         return $this->render('cart/cart.html.twig', [
@@ -32,8 +32,14 @@ class CartController extends AbstractController
         $product = $this->em->getRepository(Product::class)->find($idProduct);
 
         $this -> initSession($request);
-        $this -> purchases->add($product,1,$product->getPrice());
-        return $this-> redirectToRoute('Catalog');
+        // TODO : Find a way to check if product in alreadyin the purchases list!!
+        if(true){
+            $this -> purchases->add($product,1,$product->getPrice());
+        }
+        else{
+            $this -> purchases->add($product,1,$product->getPrice());
+        }
+        return $this-> redirectToRoute('app_cart');
     }
 
     private function initSession(Request $request){
