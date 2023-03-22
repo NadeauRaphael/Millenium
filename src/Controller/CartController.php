@@ -19,10 +19,15 @@ class CartController extends AbstractController
     #[Route('/cart', name: 'app_cart')]
     public function index(Request $request): Response
     {
+        // TODO: Make constant and get them
+        // TODO: Calculate subTotal
         $this -> initSession($request);
         $session = $request->getSession();
         return $this->render('cart/cart.html.twig', [
-            'cart'=> $this->purchases
+            'cart' => $this->purchases,
+            'SubTotal' => 1000,
+            'TVS' => 1000 * 0.2,
+            'TVQ' => 1000 * 0.3
         ]);
     }
     #[Route('/cart/add/{idProduct}',name: 'cart_add')]

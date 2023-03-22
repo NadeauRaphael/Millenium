@@ -70,17 +70,17 @@
 										<h5></h5>
 									</div>
 
-									<h5 class="text-uppercase mb-3">Calculation</h5>
+									<h4 class="text-uppercase mb-3">Calculation</h4>
 
 									<div class="mb-1 pb-2">
-										<h6>SubTotal :</h6>
-										<h6>TVS :</h6>
-										<h6>TVQ :</h6>
+										<h6><b>SubTotal : </b>{{ SubTotal }} $</h6>
+										<h6><b>TVS : </b>{{TVS}} $</h6>
+										<h6><b>TVQ : </b>{{TVQ}} $</h6>
 									</div>
 
 									<hr class="my-4">
 									<div class="d-flex justify-content-between mb-5">
-										<h5 class="text-uppercase">Total price</h5>
+										<h5 class="text-uppercase"><b>Total price : </b>{{ SubTotal + TVQ + TVS }} $</h5>
 										<h5></h5>
 									</div>
 
