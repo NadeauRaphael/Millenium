@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Cart;
+use App\Core;
+use App\Core\Constants;
 use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\TextUI\XmlConfiguration\Constant;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
-    private $purchases;
+    private $cart;
     private $em = null;
 
     #[Route('/cart', name: 'app_cart')]
@@ -23,11 +26,13 @@ class CartController extends AbstractController
         // TODO: Calculate subTotal
         $this -> initSession($request);
         $session = $request->getSession();
+        $subtotal = $this -> cart ->getSubTotal();
         return $this->render('cart/cart.html.twig', [
-            'cart' => $this->purchases,
-            'SubTotal' => 1000,
-            'TVS' => 1000 * 0.2,
-            'TVQ' => 1000 * 0.3
+            'cart' => $this->cart,
+            'SubTotal' => $subtotal,
+            'TVS' => $subtotal * (Constants::TVS),
+            'TVQ' => $subtotal * (Constants::TVQ),
+            'ShippingCost' => Constants::SHIPPING_COST
         ]);
     }
     #[Route('/cart/add/{idProduct}',name: 'cart_add')]
@@ -37,7 +42,7 @@ class CartController extends AbstractController
         $product = $this->em->getRepository(Product::class)->find($idProduct);
 
         $this -> initSession($request);
-        $this -> purchases->add($product,1,$product->getPrice());
+        $this -> cart->add($product,1,$product->getPrice());
         return $this-> redirectToRoute('app_cart');
     }
 
@@ -45,7 +50,7 @@ class CartController extends AbstractController
     public function deleteTodo($index, Request $request) : Response {
         $this->initSession($request);
 
-        $this->purchases->delete($index);
+        $this->cart->delete($index);
 
         return $this->redirectToRoute('app_cart');
     }
@@ -56,7 +61,7 @@ class CartController extends AbstractController
         $this->initSession($request);
         $action = $request->request->get('action');
         if($action == "update") {
-            $this->purchases->update($post);
+            $this->cart->update($post);
         } 
         return $this->redirectToRoute('app_cart');
     }
@@ -64,7 +69,7 @@ class CartController extends AbstractController
     private function initSession(Request $request){
         $session = $request->getSession();
         $session -> set('name','Millenium');
-        $this ->  purchases = $session->get('purchases', new Cart());
-        $session->set('purchases', $this->purchases);
+        $this ->  cart = $session->get('purchases', new Cart());
+        $session->set('purchases', $this->cart);
     }
 }

@@ -36,7 +36,7 @@
 													</button>
 												</div>
 												<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-													<h6 class="mb-0">{{purchase.price * purchase.quantity}}
+													<h6 class="mb-0">{{(purchase.price * purchase.quantity)| number_format(2, ',', ' ')}}
 														$</h6>
 												</div>
 												<div class="col-md-1 col-lg-1 col-xl-1 text-end">
@@ -73,18 +73,19 @@
 									<h4 class="text-uppercase mb-3">Calculation</h4>
 
 									<div class="mb-1 pb-2">
-										<h6><b>SubTotal : </b>{{ SubTotal }} $</h6>
-										<h6><b>TVS : </b>{{TVS}} $</h6>
-										<h6><b>TVQ : </b>{{TVQ}} $</h6>
+										<h6><b>SubTotal : </b>{{ SubTotal | number_format(2, ',', ' ')}} $</h6>
+										<h6><b>TVS : </b>{{TVS| number_format(2, ',', ' ')}} $</h6>
+										<h6><b>TVQ : </b>{{TVQ| number_format(2, ',', ' ')}} $</h6>
+										<h6><b>Shipping : </b>{{ ShippingCost | number_format(2, ',', ' ')}} $</h6>
 									</div>
 
 									<hr class="my-4">
 									<div class="d-flex justify-content-between mb-5">
-										<h5 class="text-uppercase"><b>Total price : </b>{{ SubTotal + TVQ + TVS }} $</h5>
+										<h5 class="text-uppercase"><b>Total price : </b>{{ (SubTotal + TVQ + TVS + ShippingCost)|number_format(2, ',', ' ')}} $</h5>
 										<h5></h5>
 									</div>
 
-									<button type="button" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Register</button>
+									<button type="button" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Next</button>
 
 								</div>
 							</div>

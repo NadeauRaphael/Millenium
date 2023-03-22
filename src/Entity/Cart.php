@@ -15,10 +15,10 @@ class Cart
         $purchase = new Purchase($product,$quantity,$price);
         // Loop in the purchases to see if the product is already in the cart, 
         // if yes then adding one quantity to the purchase quantity
-        foreach($this->purchases as $test){
-          if($test->getProduct()->getIdProduct() == $product->getIdProduct()){
-            $newQuantity = $test->getQuantity() + 1;
-            $test->update($newQuantity);
+        foreach($this->purchases as $testPurchase){
+          if($testPurchase->getProduct()->getIdProduct() == $product->getIdProduct()){
+            $newQuantity = $testPurchase->getQuantity() + 1;
+            $testPurchase->update($newQuantity);
             return;
           }
         }
@@ -52,5 +52,12 @@ class Cart
         if (array_key_exists($index, $this->purchases)) {
             unset($this->purchases[$index]);
         }
+    }
+    public function getSubTotal(){
+        $subTotal = 0;
+        foreach($this->purchases as $purchase){
+            $subTotal += $purchase->getPrice() * $purchase->getQuantity();
+        }
+        return $subTotal;
     }
 }
