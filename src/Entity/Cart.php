@@ -9,15 +9,21 @@ class Cart
 {
     private $purchases = [];
 
-    public function add($name, $quantity, $price)
+    public function add($product, $quantity, $price)
     {
-        $purchase = new Purchase($name,$quantity,$price);
+        $purchase = new Purchase($product,$quantity,$price);
+
         $this->purchases[] = $purchase;
     }
+
     public function update($newPurchases)
     {
         if (count($this->purchases) > 0) {
+            $quantity = $newPurchases["quantity"];
+
             foreach ($this->purchases as $key => $purchase) {
+                $newQuantity = $quantity[$key];
+                $purchase -> update($newQuantity);
             }
         }
     }

@@ -32,14 +32,28 @@ class CartController extends AbstractController
         $product = $this->em->getRepository(Product::class)->find($idProduct);
 
         $this -> initSession($request);
-        // TODO : Find a way to check if product in alreadyin the purchases list!!
-        if(true){
-            $this -> purchases->add($product,1,$product->getPrice());
-        }
-        else{
-            $this -> purchases->add($product,1,$product->getPrice());
-        }
+        $this -> purchases->add($product,1,$product->getPrice());
         return $this-> redirectToRoute('app_cart');
+    }
+
+    #[Route('/cart/delete/{index}', name:'cart_delete')]
+    public function deleteTodo($index, Request $request) : Response {
+        $this->initSession($request);
+
+        $this->purchases->delete($index);
+
+        return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('/cart/update', name:'cart_update', methods:['POST'])]
+    public function updateTodo(Request $request) : Response {
+        $post = $request->request->all();
+        $this->initSession($request);
+        $action = $request->request->get('action');
+        if($action == "update") {
+            $this->purchases->update($post);
+        } 
+        return $this->redirectToRoute('app_cart');
     }
 
     private function initSession(Request $request){
