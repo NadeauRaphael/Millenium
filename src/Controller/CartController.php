@@ -8,7 +8,6 @@ use App\Core\Constants;
 use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\Persistence\ManagerRegistry;
-use PHPUnit\TextUI\XmlConfiguration\Constant;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,17 +21,24 @@ class CartController extends AbstractController
     #[Route('/cart', name: 'app_cart')]
     public function index(Request $request): Response
     {
-        // TODO: Make constant and get them
-        // TODO: Calculate subTotal
+ 
         $this -> initSession($request);
         $session = $request->getSession();
+
+        // Get the subtotal of the cart
         $subtotal = $this -> cart ->getSubTotal();
+
+        // Check if subtotal is zero if it is then put the shipping cost to zero
+        if($subtotal == 0){ $shippingCost = 0;}
+        else{$shippingCost = Constants::SHIPPING_COST;}
+
+        // Give all the info needed to display the total
         return $this->render('cart/cart.html.twig', [
             'cart' => $this->cart,
             'SubTotal' => $subtotal,
             'TVS' => $subtotal * (Constants::TVS),
             'TVQ' => $subtotal * (Constants::TVQ),
-            'ShippingCost' => Constants::SHIPPING_COST
+            'ShippingCost' => $shippingCost
         ]);
     }
     #[Route('/cart/add/{idProduct}',name: 'cart_add')]
@@ -46,8 +52,15 @@ class CartController extends AbstractController
         return $this-> redirectToRoute('app_cart');
     }
 
+    #[Route('/cart/deleteAll', name:'cart_deleteAll')]
+    public function deletePurchases(Request $request) : Response {
+        $session = $request ->getSession();
+        $session-> remove('purchases');
+        return $this->redirectToRoute('app_cart');
+    }
+
     #[Route('/cart/delete/{index}', name:'cart_delete')]
-    public function deleteTodo($index, Request $request) : Response {
+    public function deletePurchase($index, Request $request) : Response {
         $this->initSession($request);
 
         $this->cart->delete($index);
@@ -56,7 +69,7 @@ class CartController extends AbstractController
     }
 
     #[Route('/cart/update', name:'cart_update', methods:['POST'])]
-    public function updateTodo(Request $request) : Response {
+    public function updatePurchase(Request $request) : Response {
         $post = $request->request->all();
         $this->initSession($request);
         $action = $request->request->get('action');

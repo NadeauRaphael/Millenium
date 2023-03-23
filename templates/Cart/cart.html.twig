@@ -14,48 +14,79 @@
 										<h6 class="mb-0 text-muted">{{cart.getPurchases() | length}}
 											Items</h6>
 									</div>
-									<hr class="my-4">
-									<form action="{{ path('cart_update') }}" method="POST">
-										{% for key, purchase in cart.getPurchases() %}
-											<div class="row mb-4 d-flex justify-content-between align-items-center">
-												<div class="col-md-2 col-lg-2 col-xl-2">
-													<img src="{{purchase.product.imgPath}}" class="img-fluid rounded-3" alt="Cotton T-shirt">
-												</div>
-												<div class="col-md-3 col-lg-3 col-xl-3">
-													<h6 class="text-black mb-0">{{purchase.product.name}}</h6>
-												</div>
-												<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-													<button name="action" value="update" class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-														<i class="fas fa-minus"></i>
-													</button>
-
-													<input readonly id="form1" min="0" name="{{ 'quantity[' ~ key ~ ']' }}" value="{{ purchase.quantity }}" type="number" class="form-control form-control-sm"/>
-
-													<button name="action" value="update" class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-														<i class="fas fa-plus"></i>
-													</button>
-												</div>
-												<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-													<h6 class="mb-0">{{(purchase.price * purchase.quantity)| number_format(2, ',', ' ')}}
-														$</h6>
-												</div>
-												<div class="col-md-1 col-lg-1 col-xl-1 text-end">
-													<a href="{{ path('cart_delete', { index: key }) }}" class="text-muted">
-														<i class="fas fa-times"></i>
-													</a>
-												</div>
+									{% if cart.getPurchases() | length > 0 %}
+										<div class="row mb-4 d-flex justify-content-between align-items-center">
+											<div class="col-md-2 col-lg-2 col-xl-2 text-center border-end border-dark">
+												<h5>Product</h5>
 											</div>
+											<div class="col-md-2 col-lg-2 col-xl-2 text-center border-end border-dark">
+												<h5>Name</h5>
+											</div>
+											<div class="col-md-2 col-lg-2 col-xl-2 text-center border-end border-dark">
+												<h5>Price</h5>
+											</div>
+											<div class="col-md-3 col-lg-3 col-xl-2 text-center border-end border-dark">
+												<h5>Quantity</h5>
+											</div>
+											<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 text-center">
+												<h5>Total</h5>
+											</div>
+											<div class="col-md-1 col-lg-1 col-xl-1 border-end border-dark" style="height:35px"></div>
+										</div>
+										<hr class="my-4">
+										<form action="{{ path('cart_update') }}" method="POST">
+											{% for key, purchase in cart.getPurchases() %}
+												<div class="row mb-4 d-flex justify-content-between align-items-center">
+													<div class="col-md-2 col-lg-2 col-xl-2 text-center">
+														<img src="{{purchase.product.imgPath}}" class="img-fluid rounded-3" alt="Cotton T-shirt">
+													</div>
+													<div class="col-md-2 col-lg-2 col-xl-2 text-center">
+														<h6 class="text-black mb-0">{{purchase.product.name}}</h6>
+													</div>
+													<div class="col-md-2 col-lg-2 col-xl-2 text-center">
+														<h6 class="text-black mb-0">{{purchase.price}}
+															$</h6>
+													</div>
+													<div class="col-md-3 col-lg-3 col-xl-2 d-flex text-center">
+														<button name="action" value="update" class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+															<i class="fas fa-minus"></i>
+														</button>
 
-											<hr class="my-4">
+														<input readonly id="form1" min="0" name="{{ 'quantity[' ~ key ~ ']' }}" value="{{ purchase.quantity }}" type="number" class="form-control form-control-sm"/>
 
-										{% endfor %}
-									</form>
+														<button name="action" value="update" class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+															<i class="fas fa-plus"></i>
+														</button>
+													</div>
+													<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 text-center">
+														<h6 class="mb-0">{{(purchase.price * purchase.quantity)| number_format(2, ',', ' ')}}
+															$</h6>
+													</div>
+													<div class="col-md-1 col-lg-1 col-xl-1 text-end">
+														<a href="{{ path('cart_delete', { index: key }) }}" class="text-muted">
+															<i class="fas fa-times"></i>
+														</a>
+													</div>
+												</div>
 
-									<div class="pt-5">
-										<h6 class="mb-0">
+												<hr class="my-4">
+
+											{% endfor %}
+										</form>
+									{% else %}
+										<h1 class="text-center">Oops ! No product found</h1>
+									{% endif %}
+
+									<div class="pt-5 row">
+										<h6 class="mb-0 col-3">
 											<a href="{{path('Catalog',{}) }}" class="text-body">
 												<i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a>
 										</h6>
+										<a href="{{path('cart_deleteAll')}}" class="col-1 offset-8">
+											<button type="button" class="btn btn-lg">
+												<i class="fas fa-trash" style="color:red"></i>
+											</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -73,15 +104,35 @@
 									<h4 class="text-uppercase mb-3">Calculation</h4>
 
 									<div class="mb-1 pb-2">
-										<h6><b>SubTotal : </b>{{ SubTotal | number_format(2, ',', ' ')}} $</h6>
-										<h6><b>TVS : </b>{{TVS| number_format(2, ',', ' ')}} $</h6>
-										<h6><b>TVQ : </b>{{TVQ| number_format(2, ',', ' ')}} $</h6>
-										<h6><b>Shipping : </b>{{ ShippingCost | number_format(2, ',', ' ')}} $</h6>
+										<h6>
+											<b>SubTotal :
+											</b>
+											{{ SubTotal | number_format(2, ',', ' ')}}
+											$</h6>
+										<h6>
+											<b>TVS :
+											</b>
+											{{TVS| number_format(2, ',', ' ')}}
+											$</h6>
+										<h6>
+											<b>TVQ :
+											</b>
+											{{TVQ| number_format(2, ',', ' ')}}
+											$</h6>
+										<h6>
+											<b>Shipping :
+											</b>
+											{{ ShippingCost | number_format(2, ',', ' ')}}
+											$</h6>
 									</div>
 
 									<hr class="my-4">
 									<div class="d-flex justify-content-between mb-5">
-										<h5 class="text-uppercase"><b>Total price : </b>{{ (SubTotal + TVQ + TVS + ShippingCost)|number_format(2, ',', ' ')}} $</h5>
+										<h5 class="text-uppercase">
+											<b>Total price :
+											</b>
+											{{ (SubTotal + TVQ + TVS + ShippingCost)|number_format(2, ',', ' ')}}
+											$</h5>
 										<h5></h5>
 									</div>
 
