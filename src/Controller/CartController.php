@@ -79,7 +79,7 @@ class CartController extends AbstractController
         return $this->redirectToRoute('app_cart');
     }
 
-    private function initSession(Request $request){
+    public function initSession(Request $request){
         $session = $request->getSession();
         $session -> set('name','Millenium');
         $this ->  cart = $session->get('purchases', new Cart());

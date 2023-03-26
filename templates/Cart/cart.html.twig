@@ -48,18 +48,18 @@
 														<h6 class="text-black mb-0">{{purchase.price}}
 															$</h6>
 													</div>
-													<div class="col-md-3 col-lg-3 col-xl-2 d-flex text-left">
+													<div class="col-md-2 col-lg-2 col-xl-2 d-flex text-left">
 														<button name="action" value="update" class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
 															<i class="fas fa-minus"></i>
 														</button>
 
-														<input readonly id="form1" min="0" name="{{ 'quantity[' ~ key ~ ']' }}" value="{{ purchase.quantity }}" type="number" class="form-control form-control-sm"/>
+														<input readonly id="form1" min="0" name="{{ 'quantity[' ~ key ~ ']' }}" value="{{ purchase.quantity }}" type="number" class="form-control form-control-sm" style="width:45px;"/>
 
 														<button name="action" value="update" class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
 															<i class="fas fa-plus"></i>
 														</button>
 													</div>
-													<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 text-left">
+													<div class="col-md-2 col-lg-2 col-xl-2 offset-lg-1 text-left">
 														<h6 class="mb-0">{{(purchase.price * purchase.quantity)| number_format(2, ',', ' ')}}
 															$</h6>
 													</div>

@@ -16,6 +16,8 @@ class MainPageController extends AbstractController
     #[Route('/', name: 'Catalog')]
     public function index(Request $request,ManagerRegistry $doctrine): Response
     {
+        $classCart = new CartController();
+        $classCart  -> initSession($request);
         $this-> em = $doctrine -> getManager();
 
 
