@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Core\Notification;
+use App\Core\NotificationColor;
 
 class CartController extends AbstractController
 {
@@ -48,7 +50,11 @@ class CartController extends AbstractController
         $product = $this->em->getRepository(Product::class)->find($idProduct);
 
         $this -> initSession($request);
-        $this -> cart->add($product,1,$product->getPrice());
+        // Check if the product is in stock when adding from the catalog
+        $add = $this -> cart->add($product,1,$product->getPrice());
+        if($add == false){
+            $this->addFlash('AddQuantity', new Notification('NotInStock', 'No more in stock', NotificationColor::WARNING));
+        }
         return $this-> redirectToRoute('app_cart');
     }
 
@@ -74,7 +80,11 @@ class CartController extends AbstractController
         $this->initSession($request);
         $action = $request->request->get('action');
         if($action == "update") {
-            $this->cart->update($post);
+            // Check if the product is in stock when upping or downing the quantity from the cart
+            $updateQuantity = $this->cart->update($post);
+            if($updateQuantity == false){
+                $this->addFlash('AddQuantity', new Notification('NotInStock', 'No more in stock', NotificationColor::WARNING));
+            }
         } 
         return $this->redirectToRoute('app_cart');
     }
