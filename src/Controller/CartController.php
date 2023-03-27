@@ -48,13 +48,8 @@ class CartController extends AbstractController
     {
         $this -> em = $doctrine -> getManager();
         $product = $this->em->getRepository(Product::class)->find($idProduct);
-
         $this -> initSession($request);
-        // Check if the product is in stock when adding from the catalog
-        $add = $this -> cart->add($product,1,$product->getPrice());
-        if($add == false){
-            $this->addFlash('AddQuantity', new Notification('NotInStock', 'No more in stock', NotificationColor::WARNING));
-        }
+        $this -> cart->add($product,1,$product->getPrice());
         return $this-> redirectToRoute('app_cart');
     }
 
@@ -78,6 +73,22 @@ class CartController extends AbstractController
     public function updatePurchase(Request $request) : Response {
         $post = $request->request->all();
         $this->initSession($request);
+        $action = $request->request->get('action');
+
+        if($action == "update") {
+            $updateState = $this->cart->update($post);
+            if($updateState){
+                $this->addFlash('update', 
+                new Notification('success', 'Cart updated successfully', NotificationColor::INFO));
+            }
+            else{
+                $this->addFlash('update', 
+                new Notification('Error', 'Quantity entered is not a number', NotificationColor::DANGER));
+            }
+        } else if($action == "empty") {
+            $session = $request->getSession();
+            $session->remove('purchases');
+        }
         $this->cart->update($post);
         return $this->redirectToRoute('app_cart');
     }

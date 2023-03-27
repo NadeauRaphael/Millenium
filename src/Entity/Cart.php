@@ -19,6 +19,7 @@ class Cart
             if ($testPurchase->getProduct()->getIdProduct() == $product->getIdProduct()) {
                 $newQuantity = $testPurchase->getQuantity() + 1;
                 $testPurchase->update($newQuantity);
+                return true;
             }
         }
         // If it a new purchase check if we have at least one in stock
@@ -33,21 +34,26 @@ class Cart
     public function update($newPurchases)
     {
         if (count($this->purchases) > 0) {
-            var_dump($newPurchases);
-            die();
             $quantity = $newPurchases["quantity"];
             foreach ($this->purchases as $key => $purchase) {
-                $newQuantity = $quantity[$key];
-                // test if the quantity is zero, if yes then delete the product from the cart
-                if ($newQuantity == 0) {
-                    $this->delete($key);
-                    return true;
+                if (is_numeric($quantity[$key])) {
+                    $newQuantity = $quantity[$key];
+                    // test if the quantity is zero, if yes then delete the product from the cart
+                    if ($newQuantity == 0) {
+                        $this->delete($key);
+                        return true;
+                    }
+                    // Check if the stock is more the new quantity 
+                    else {
+                        $purchase->update($newQuantity);
+                        return true;
+                    }
                 }
-                // Check if the stock is more the new quantity 
-                else {
-                    $purchase->update($newQuantity);
+                else{
+                    return false;
                 }
             }
+            return true;
         }
     }
     public function getPurchases()

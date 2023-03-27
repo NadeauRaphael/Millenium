@@ -1,6 +1,18 @@
 {% extends 'core/base.html.twig' %}
 
 {% block content %}
+<!-- Add style to delete arrows from the number input, wont work in css file-->
+	<style>
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		input[type=number] {
+			-moz-appearance: textfield;
+		}
+	</style>
 	<div class="container py-5 h-100">
 		<div class="row d-flex justify-content-center align-items-center h-100">
 			<div class="col-12">
@@ -14,7 +26,7 @@
 										<h6 class="mb-0 text-muted">{{cart.getPurchases() | length}}
 											Items</h6>
 									</div>
-									{% for flash in app.flashes('AddQuantity') %}
+									{% for flash in app.flashes('update') %}
 										<div class="alert {{ flash.color }}">{{ flash.content }}</div>
 									{% endfor %}
 									{% if cart.getPurchases() | length > 0 %}
@@ -37,113 +49,103 @@
 											<div class="col-md-1 col-lg-1 col-xl-1 text-end"></div>
 										</div>
 										<hr class="my-4">
-										{% for key, purchase in cart.getPurchases() %}
-											<div class="row mb-4 d-flex justify-content-between align-items-center">
-												<div class="col-md-2 col-lg-2 col-xl-2 text-left">
-													<img src="{{purchase.product.imgPath}}" class="img-fluid rounded-3" alt="Cotton T-shirt">
+										<form action="{{ path('cart_update') }}" method="POST">
+											{% for key, purchase in cart.getPurchases() %}
+												<div class="row mb-4 d-flex justify-content-between align-items-center">
+													<div class="col-md-2 col-lg-2 col-xl-2 text-left">
+														<img src="{{purchase.product.imgPath}}" class="img-fluid rounded-3" alt="Cotton T-shirt">
+													</div>
+													<div class="col-md-2 col-lg-2 col-xl-2 text-left">
+														<h6 class="text-black mb-0">{{purchase.product.name}}</h6>
+													</div>
+													<div class="col-md-2 col-lg-2 col-xl-2 text-left">
+														<h6 class="text-black mb-0">{{purchase.price}}
+															$</h6>
+													</div>
+													<div class="col-md-2 col-lg-2 col-xl-2 d-flex">
+														<input class="form-control" min="0" max="200" name="{{ 'quantity[' ~ key ~ ']' }}" value="{{ purchase.quantity }}" type="number" style="text-align:center;"/>
+													</div>
+													<div class="col-md-2 col-lg-2 col-xl-2 offset-lg-1 text-left">
+														<h6 class="mb-0">{{(purchase.price * purchase.quantity)| number_format(2, ',', ' ')}}
+															$</h6>
+													</div>
+													<div class="col-md-1 col-lg-1 col-xl-1 text-end">
+														<a href="{{ path('cart_delete', { index: key }) }}" class="text-muted">
+															<i class="fas fa-times"></i>
+														</a>
+													</div>
 												</div>
-												<div class="col-md-2 col-lg-2 col-xl-2 text-left">
-													<h6 class="text-black mb-0">{{purchase.product.name}}</h6>
-												</div>
-												<div class="col-md-2 col-lg-2 col-xl-2 text-left">
-													<h6 class="text-black mb-0">{{purchase.price}}
-														$</h6>
-												</div>
-												<div class="col-md-2 col-lg-2 col-xl-2 d-flex text-left">
-													<button class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-														<i class="fas fa-minus"></i>
-													</button>
 
-													<input readonly id="form1" min="0" name="{{ 'quantity[' ~ key ~ ']' }}" value="{{ purchase.quantity }}" type="number" class="form-control form-control-sm" style="width:60px;"/>
+												<hr class="my-4">
 
-													<button class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-														<i class="fas fa-plus"></i>
-													</button>
-												</div>
-												<div class="col-md-2 col-lg-2 col-xl-2 offset-lg-1 text-left">
-													<h6 class="mb-0">{{(purchase.price * purchase.quantity)| number_format(2, ',', ' ')}}
-														$</h6>
-												</div>
-												<div class="col-md-1 col-lg-1 col-xl-1 text-end">
-													<a href="{{ path('cart_delete', { index: key }) }}" class="text-muted">
-														<i class="fas fa-times"></i>
-													</a>
-												</div>
-											</div>
+											{% endfor %}
+										{% else %}
+											<h1 class="text-center">Oops ! No product found</h1>
+										{% endif %}
 
-											<hr class="my-4">
-
-										{% endfor %}
-									{% else %}
-										<h1 class="text-center">Oops ! No product found</h1>
-									{% endif %}
-
-									<div class="pt-5 row">
-										<h6 class="mb-0 col-3">
-											<a href="{{path('Catalog',{}) }}" class="text-body">
-												<i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a>
-										</h6>
-										<a href="{{path('cart_update')}}" class="col-1 offset-6">
-											<button type="button" class="btn btn-lg">
-												<i class="fas fa-save" style="color:green"></i>
-											</button>
-										</a>
-										<a href="{{path('cart_deleteAll')}}" class="col-1 offset-1">
-											<button type="button" class="btn btn-lg">
-												<i class="fas fa-trash" style="color:red"></i>
-											</button>
-										</a>
+										<div class="pt-5 row">
+											<h6 class="mb-0 col-3">
+												<a href="{{path('Catalog',{}) }}" class="text-body">
+													<i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a>
+											</h6>
+											<button name="action" value="update" type="submit" class="btn btn-success offset-2 col-3 ">
+												<i class="fas fa-arrows-rotate"></i>
+												Update</button>
+											<button name="action" value="empty" type="submit" class="btn btn-danger col-3 mx-4">
+												<i class="fas fa-trash"></i>
+												Empty</button>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-lg-4 bg-grey">
-								<div class="p-5">
-									<h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
-									<hr class="my-4">
+								<div class="col-lg-4 bg-grey">
+									<div class="p-5">
+										<h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+										<hr class="my-4">
 
-									<div class="d-flex justify-content-between mb-4">
-										<h5 class="text-uppercase">{{cart.getPurchases() | length}}
-											items</h5>
-										<h5></h5>
+										<div class="d-flex justify-content-between mb-4">
+											<h5 class="text-uppercase">{{cart.getPurchases() | length}}
+												items</h5>
+											<h5></h5>
+										</div>
+
+										<h4 class="text-uppercase mb-3">Calculation</h4>
+
+										<div class="mb-1 pb-2">
+											<h6>
+												<b>SubTotal :
+												</b>
+												{{ SubTotal | number_format(2, ',', ' ')}}
+												$</h6>
+											<h6>
+												<b>TVS :
+												</b>
+												{{TVS| number_format(2, ',', ' ')}}
+												$</h6>
+											<h6>
+												<b>TVQ :
+												</b>
+												{{TVQ| number_format(2, ',', ' ')}}
+												$</h6>
+											<h6>
+												<b>Shipping :
+												</b>
+												{{ ShippingCost | number_format(2, ',', ' ')}}
+												$</h6>
+										</div>
+
+										<hr class="my-4">
+										<div class="d-flex justify-content-between mb-5">
+											<h5 class="text-uppercase">
+												<b>Total price :
+												</b>
+												{{ (SubTotal + TVQ + TVS + ShippingCost)|number_format(2, ',', ' ')}}
+												$</h5>
+											<h5></h5>
+										</div>
+
+										<button type="button" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Next</button>
+
 									</div>
-
-									<h4 class="text-uppercase mb-3">Calculation</h4>
-
-									<div class="mb-1 pb-2">
-										<h6>
-											<b>SubTotal :
-											</b>
-											{{ SubTotal | number_format(2, ',', ' ')}}
-											$</h6>
-										<h6>
-											<b>TVS :
-											</b>
-											{{TVS| number_format(2, ',', ' ')}}
-											$</h6>
-										<h6>
-											<b>TVQ :
-											</b>
-											{{TVQ| number_format(2, ',', ' ')}}
-											$</h6>
-										<h6>
-											<b>Shipping :
-											</b>
-											{{ ShippingCost | number_format(2, ',', ' ')}}
-											$</h6>
-									</div>
-
-									<hr class="my-4">
-									<div class="d-flex justify-content-between mb-5">
-										<h5 class="text-uppercase">
-											<b>Total price :
-											</b>
-											{{ (SubTotal + TVQ + TVS + ShippingCost)|number_format(2, ',', ' ')}}
-											$</h5>
-										<h5></h5>
-									</div>
-
-									<button type="button" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Next</button>
-
 								</div>
 							</div>
 						</div>
@@ -151,5 +153,4 @@
 				</div>
 			</div>
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}
