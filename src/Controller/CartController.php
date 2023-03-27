@@ -35,7 +35,7 @@ class CartController extends AbstractController
         else{$shippingCost = Constants::SHIPPING_COST;}
 
         // Give all the info needed to display the total
-        return $this->render('cart/cart.html.twig', [
+        return $this->render('Cart/cart.html.twig', [
             'cart' => $this->cart,
             'SubTotal' => $subtotal,
             'TVS' => $subtotal * (Constants::TVS),
@@ -48,13 +48,8 @@ class CartController extends AbstractController
     {
         $this -> em = $doctrine -> getManager();
         $product = $this->em->getRepository(Product::class)->find($idProduct);
-
         $this -> initSession($request);
-        // Check if the product is in stock when adding from the catalog
-        $add = $this -> cart->add($product,1,$product->getPrice());
-        if($add == false){
-            $this->addFlash('AddQuantity', new Notification('NotInStock', 'No more in stock', NotificationColor::WARNING));
-        }
+        $this -> cart->add($product,1,$product->getPrice());
         return $this-> redirectToRoute('app_cart');
     }
 
@@ -74,18 +69,27 @@ class CartController extends AbstractController
         return $this->redirectToRoute('app_cart');
     }
 
-    #[Route('/cart/update', name:'cart_update', methods:['POST'])]
+    #[Route('/cart/update', name:'cart_update')]
     public function updatePurchase(Request $request) : Response {
         $post = $request->request->all();
         $this->initSession($request);
         $action = $request->request->get('action');
+
         if($action == "update") {
-            // Check if the product is in stock when upping or downing the quantity from the cart
-            $updateQuantity = $this->cart->update($post);
-            if($updateQuantity == false){
-                $this->addFlash('AddQuantity', new Notification('NotInStock', 'No more in stock', NotificationColor::WARNING));
+            $updateState = $this->cart->update($post);
+            if($updateState){
+                $this->addFlash('update', 
+                new Notification('success', 'Cart updated successfully', NotificationColor::INFO));
             }
-        } 
+            else{
+                $this->addFlash('update', 
+                new Notification('Error', 'Quantity entered is not a number', NotificationColor::DANGER));
+            }
+        } else if($action == "empty") {
+            $session = $request->getSession();
+            $session->remove('purchases');
+        }
+        $this->cart->update($post);
         return $this->redirectToRoute('app_cart');
     }
 

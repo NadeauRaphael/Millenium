@@ -11,55 +11,48 @@ class Cart
 {
     private $purchases = [];
 
-    public function add($product, $quantity, $price): bool
+    public function add($product, $quantity, $price)
     {
         $purchase = new Purchase($product, $quantity, $price);
         // loop in the cart to see if the product is already exist , if yes then add one quantity.
         foreach ($this->purchases as $testPurchase) {
             if ($testPurchase->getProduct()->getIdProduct() == $product->getIdProduct()) {
                 $newQuantity = $testPurchase->getQuantity() + 1;
-                // Check the quantity available in stock for the product.
-                if ($testPurchase->getProduct()->getStockQuantity() >= $newQuantity) {
-                    $testPurchase->update($newQuantity);
-                    return true;
-                }
-                else return false;
+                $testPurchase->update($newQuantity);
+                return true;
             }
         }
         // If it a new purchase check if we have at least one in stock
-        if($purchase->getProduct()->getStockQuantity() > 0){
+        if ($purchase->getProduct()->getStockQuantity() > 0) {
             $this->purchases[] = $purchase;
             return true;
-        }else{
-             return false;
+        } else {
+            return false;
         }
     }
 
-    public function update($newPurchases):bool
+    public function update($newPurchases)
     {
-        $stock = false;
         if (count($this->purchases) > 0) {
-            $quantity = $newPurchases["quantity"]; 
+            $quantity = $newPurchases["quantity"];
             foreach ($this->purchases as $key => $purchase) {
-                $newQuantity = $quantity[$key];
-                var_dump($key);
-                // test if the quantity is zero, if yes then delete the product from the cart
-                if ($newQuantity == 0) {
-                    $this->delete($key);
-                    return true;
-                }
-                // Check if the stock is more the new quantity 
-                else {
-                    if($purchase -> getProduct() -> getStockQuantity() >= $newQuantity){
+                if (is_numeric($quantity[$key])) {
+                    $newQuantity = $quantity[$key];
+                    // test if the quantity is zero, if yes then delete the product from the cart
+                    if ($newQuantity == 0) {
+                        $this->delete($key);
+                        return true;
+                    }
+                    // Check if the stock is more the new quantity 
+                    else {
                         $purchase->update($newQuantity);
-                        $stock = true;
                     }
-                    else{
-                        $stock = false;
-                    }
+                }
+                else{
+                    return false;
                 }
             }
-            return $stock;
+            return true;
         }
     }
     public function getPurchases()
