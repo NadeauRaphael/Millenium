@@ -14,15 +14,16 @@ class Cart
     public function add($product, $quantity, $price): bool
     {
         $purchase = new Purchase($product, $quantity, $price);
+        // loop in the cart to see if the product is already exist , if yes then add one quantity.
         foreach ($this->purchases as $testPurchase) {
             if ($testPurchase->getProduct()->getIdProduct() == $product->getIdProduct()) {
                 $newQuantity = $testPurchase->getQuantity() + 1;
-                // Check the quantity available in stock for the product
+                // Check the quantity available in stock for the product.
                 if ($testPurchase->getProduct()->getStockQuantity() >= $newQuantity) {
                     $testPurchase->update($newQuantity);
                     return true;
                 }
-                else{return false;}
+                else return false;
             }
         }
         // If it a new purchase check if we add at least one in stock
