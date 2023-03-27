@@ -26,7 +26,7 @@ class Cart
                 else return false;
             }
         }
-        // If it a new purchase check if we add at least one in stock
+        // If it a new purchase check if we have at least one in stock
         if($purchase->getProduct()->getStockQuantity() > 0){
             $this->purchases[] = $purchase;
             return true;
