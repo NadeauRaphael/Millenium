@@ -46,7 +46,6 @@ class Cart
                     // Check if the stock is more the new quantity 
                     else {
                         $purchase->update($newQuantity);
-                        return true;
                     }
                 }
                 else{
