@@ -43,6 +43,9 @@ class Cart
                         $this->delete($key);
                         return true;
                     }
+                    if($newQuantity < 0){
+                        $purchase->update($this->purchases[$key]->getQuantity());
+                    }
                     // Check if the stock is more the new quantity 
                     else {
                         $purchase->update($newQuantity);
