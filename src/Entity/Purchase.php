@@ -8,11 +8,12 @@ class Purchase
     private $quantity;
     private $price;
 
-    public function __construct($product, $quantity, $price)
+    // YANNICK: Correction issue Classe Achat #9
+    public function __construct($product)
     {
         $this -> product = $product;
-        $this -> quantity = $quantity;
-        $this -> price = $price;
+        $this -> quantity = 1;
+        $this -> price = $product -> getPrice();
     }
 
     public function update($quantity){

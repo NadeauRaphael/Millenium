@@ -49,7 +49,7 @@ class CartController extends AbstractController
         $this -> em = $doctrine -> getManager();
         $product = $this->em->getRepository(Product::class)->find($idProduct);
         $this -> initSession($request);
-        $this -> cart->add($product,1,$product->getPrice());
+        $this -> cart->add($product);
         return $this-> redirectToRoute('app_cart');
     }
 
