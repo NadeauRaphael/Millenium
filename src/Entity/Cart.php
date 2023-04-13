@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Core\Constants;
 use App\Repository\CartRepository;
 use Doctrine\ORM\Mapping as ORM;
 use SebastianBergmann\Environment\Console;
@@ -11,9 +12,9 @@ class Cart
 {
     private $purchases = [];
 
-    public function add($product, $quantity, $price)
+    public function add($product)
     {
-        $purchase = new Purchase($product, $quantity, $price);
+        $purchase = new Purchase($product);
         // loop in the cart to see if the product is already exist , if yes then add one quantity.
         foreach ($this->purchases as $testPurchase) {
             if ($testPurchase->getProduct()->getIdProduct() == $product->getIdProduct()) {
@@ -76,5 +77,14 @@ class Cart
             $subTotal += $purchase->getPrice() * $purchase->getQuantity();
         }
         return $subTotal;
+    }
+    public function getTVQPrice(){
+        return $this -> getSubTotal() * (Constants::TVQ);
+    }
+    public function getTVSPrice(){
+        return $this -> getSubTotal() * (Constants::TVS);
+    }
+    public function getShippinCost(){
+        return Constants::SHIPPING_COST;
     }
 }

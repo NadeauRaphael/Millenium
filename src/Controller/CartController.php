@@ -36,11 +36,7 @@ class CartController extends AbstractController
 
         // Give all the info needed to display the total
         return $this->render('Cart/cart.html.twig', [
-            'cart' => $this->cart,
-            'SubTotal' => $subtotal,
-            'TVS' => $subtotal * (Constants::TVS),
-            'TVQ' => $subtotal * (Constants::TVQ),
-            'ShippingCost' => $shippingCost
+            'cart' => $this->cart
         ]);
     }
     #[Route('/cart/add/{idProduct}',name: 'cart_add')]

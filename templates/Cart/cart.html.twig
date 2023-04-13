@@ -114,22 +114,22 @@
 											<h6>
 												<b>SubTotal :
 												</b>
-												{{ SubTotal | number_format(2, ',', ' ')}}
+												{{ cart.getSubTotal | number_format(2, ',', ' ')}}
 												$</h6>
 											<h6>
 												<b>TVS :
 												</b>
-												{{TVS| number_format(2, ',', ' ')}}
+												{{cart.getTVSPrice| number_format(2, ',', ' ')}}
 												$</h6>
 											<h6>
 												<b>TVQ :
 												</b>
-												{{TVQ| number_format(2, ',', ' ')}}
+												{{cart.getTVQPrice| number_format(2, ',', ' ')}}
 												$</h6>
 											<h6>
 												<b>Shipping :
 												</b>
-												{{ ShippingCost | number_format(2, ',', ' ')}}
+												{{ cart.getShippinCost | number_format(2, ',', ' ')}}
 												$</h6>
 										</div>
 
@@ -138,7 +138,7 @@
 											<h5 class="text-uppercase">
 												<b>Total price :
 												</b>
-												{{ (SubTotal + TVQ + TVS + ShippingCost)|number_format(2, ',', ' ')}}
+												{{ (cart.getSubTotal + cart.getTVQPrice + cart.getTVSPrice + cart.getShippinCost)|number_format(2, ',', ' ')}}
 												$</h5>
 											<h5></h5>
 										</div>
