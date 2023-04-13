@@ -28,4 +28,7 @@ class Purchase
     public function getPrice(){
         return $this -> price;
     }
+    public function getTotalPrice(){
+        return $this -> price * $this -> quantity;
+    }
 }
