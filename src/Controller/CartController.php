@@ -23,16 +23,7 @@ class CartController extends AbstractController
     #[Route('/cart', name: 'app_cart')]
     public function index(Request $request): Response
     {
- 
         $this -> initSession($request);
-        $session = $request->getSession();
-
-        // Get the subtotal of the cart
-        $subtotal = $this -> cart ->getSubTotal();
-
-        // Check if subtotal is zero if it is then put the shipping cost to zero
-        if($subtotal == 0){ $shippingCost = 0;}
-        else{$shippingCost = Constants::SHIPPING_COST;}
 
         // Give all the info needed to display the total
         return $this->render('Cart/cart.html.twig', [
