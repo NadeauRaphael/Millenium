@@ -23,6 +23,7 @@ class Cart
             }
         }
         // If it a new purchase check if we have at least one in stock
+        // Correction negative quantity
         if ($purchase->getProduct()->getStockQuantity() > 0) {
             $this->purchases[] = $purchase;
             return true;
