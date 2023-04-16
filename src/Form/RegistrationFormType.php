@@ -78,9 +78,9 @@ class RegistrationFormType extends AbstractType
                 'second_options' => ['label' => "Password comfirmation"]
             ])
             ->add('create', SubmitType::class, [
-                'label' => "Créer votre compte",
+                'label' => "Create Account",
                 'row_attr' => ['class' => 'form-button'],
-                'attr' => ['class' => 'btnCreate btn-success']
+                'attr' => ['class' => 'btnCreateAccount btn-success']
             ]);
             
             $builder->get('phone')->addModelTransformer(new CallbackTransformer(

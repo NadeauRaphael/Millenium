@@ -1,6 +1,20 @@
 .card-register {
     font-size: 1rem;
     line-height: 2.15;
-    padding-left: .75em;
-    padding-right: .75em;
+}
+.btnCreateAccount {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    width: 200px;
+}
+.btnLogin {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    text-transform: uppercase;
+}
+main{
+    background-color: #f5f6f7;
 }
