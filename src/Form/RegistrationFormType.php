@@ -2,9 +2,13 @@
 
 namespace App\Form;
 
+use Symfony\Component\Form\CallbackTransformer;
 use App\Entity\Client;
+use Locale;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +20,8 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Locales;
 
 
 class RegistrationFormType extends AbstractType
@@ -34,7 +40,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('lastName', TextType::class, [
                 'required' => true,
-                'label' => 'Name',
+                'label' => 'Last name',
                 'attr' => []
             ])
             ->add('phone', TextType::class, [
@@ -52,9 +58,14 @@ class RegistrationFormType extends AbstractType
                 'label' => 'City',
                 'attr' => []
             ])
+            ->add('province', CountryType::class, [
+                'required' => true,
+                'label' => 'Province',
+                'attr' => []
+            ])
             ->add('postalCode', TextType::class, [
                 'required' => true,
-                'label' => 'postal Code',
+                'label' => 'Postal Code',
                 'attr' => []
             ])
             ->add('password', RepeatedType::class, [
@@ -69,9 +80,20 @@ class RegistrationFormType extends AbstractType
             ->add('create', SubmitType::class, [
                 'label' => "Créer votre compte",
                 'row_attr' => ['class' => 'form-button'],
-                'attr' => ['class' => 'btnCreate btn-primary']
+                'attr' => ['class' => 'btnCreate btn-success']
             ]);
-        ;
+            
+            $builder->get('phone')->addModelTransformer(new CallbackTransformer(
+                function($phoneFromDatabase) {
+                    $newPhone = substr_replace($phoneFromDatabase, "-", 3, 0);
+                    return substr_replace($newPhone, "-", 7, 0);
+                }, 
+                function ($phoneFromView) {
+                    return str_replace("-", "", $phoneFromView);
+                }
+            ));
+
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void
