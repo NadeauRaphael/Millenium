@@ -6,29 +6,35 @@
 	{% if notification %}
 		<div class="alert {{ notification.color }}">{{ notification.content }}</div>
 	{% endif %}
-	<div class="card text-black mt-5 shadow-2-strong card-register" style="border-radius: 15px;">
-		<div class="card-body p-md-5">
-			<h1 class="mb-2 pb-2 pb-md-0 mb-md-4 text-center text-success ">Login</h1>
-			<hr>
-			<form action="{{ path('app_login') }}" method="post">
-				<div class="mb-4 row">
-					<label class="col-3" for="username">Email:</label>
-					<input class="col-9 form-control" type="email" id="username" name="_username" value="{{ last_username }}">
-				</div>
+	<div class="row">
+		<div class="col-lg-8 mx-auto">
+			<div class="card text-black my-5 shadow-2-strong card-register" style="border-radius: 15px;">
+				<div class="card-body p-md-5">
+					<h1 class="mb-2 pb-2 pb-md-0 mb-md-4 text-center text-success ">Login</h1>
+					<hr>
+					<form action="{{ path('app_login') }}" method="post">
+						<div class="mb-4 row">
+							<label class="col-3" for="username">Email :</label>
+							<div class="col-9">
+								<input class="form-control form-input-bg" type="email" id="username" name="_username" value="{{ last_username }}">
+							</div>
+						</div>
+						<div class="mb-4 row">
+							<label class="form-label col-3" for="password">Mot de passe :</label>
+							<div class="form-outline col-9">
+								<input class="form-control form-input-bg" type="password" id="password" name="_password">
+							</div>
+						</div>
+						{# If you want to control the URL the user is redirected to on success #}
+						<input type="hidden" name="_target_path" value="{{ path('app_profile') }}">
 
-				<div class="form-outline mb-4">
-					<label class="form-label" for="password">Mot de passe:</label>
-					<input class="form-control" type="password" id="password" name="_password">
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+						<div class="row text-center">
+							<button type="submit" class="btn btn-success btnLogin col-6 offset-3">Connection</button>
+						</div>
+					</form>
 				</div>
-
-				{# If you want to control the URL the user is redirected to on success #}
-				<input type="hidden" name="_target_path" value="{{ path('app_profile') }}">
-
-				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-				<div class="row text-center">
-					<button type="submit" class="btn btn-success btnLogin col-6 offset-3">Connection</button>
-				</div>
-			</form>
+			</div>
 		</div>
 	</div>
 {% endblock %}
