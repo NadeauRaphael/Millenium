@@ -1,15 +1,13 @@
 {% extends 'core/base.html.twig' %}
 
 {% block content %}
-    <h1 class="mt-5">Profil</h1>
-
+	<h1 class="mt-5">Profil</h1>
+	<span>
+		<a href="{{ path('app_logout') }}">Se déconnecter</a>
+	</span>
 {% endblock %}
 
 
-{% block stylesheets %} 
-    
-{% endblock %}
+{% block stylesheets %}{% endblock %}
 
-{% block javascripts %}
-
-{% endblock %}
+{% block javascripts %}{% endblock %}
