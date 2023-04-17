@@ -3,6 +3,10 @@
     width: 300px;
     overflow: hidden;
 }
+.imgIcon{
+    height: 35px;
+    margin-right: 0;
+}
 .imgModal{
     height: 150px;
     width: 150px;

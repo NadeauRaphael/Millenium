@@ -33,13 +33,13 @@ class RegistrationFormType extends UserFormType
         $builder->add('email', TextType::class, [
                 'required' => true,
                 'label' => 'Email',
-                'attr' => []
+                'attr' => ['class' => 'form-input-bg']
         ])
         ->add('password', RepeatedType::class, [
             'type' => PasswordType::class,
             'invalid_message' => "Les mots de passe doivent etre identiques",
             'constraints' => [new Assert\Length(min: 6, minMessage: "The password must containt at least {{ limit }} characters")],
-            'options' => ['attr' => ['class' => 'password-field']],
+            'options' => ['attr' => ['class' => 'password-field form-input-bg']],
             'required' => true,
             'first_options' => ['label' => "Password"],
             'second_options' => ['label' => "Password comfirmation"]

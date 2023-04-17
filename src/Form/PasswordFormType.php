@@ -31,7 +31,7 @@ class PasswordFormType extends AbstractType
             'constraints' => [new Assert\Length(min: 6, minMessage: "The password must containt at least {{ limit }} characters")],
             'attr' => ['class' => 'password-field'],
             'required' => true,
-            'label' => 'Old Password'
+            'label' => 'Current Password'
         ])
         ->add('password', RepeatedType::class, [
             'type' => PasswordType::class,

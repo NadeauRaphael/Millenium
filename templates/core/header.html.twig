@@ -16,8 +16,8 @@
 						<a class="nav-link" href="{{ path('Catalog') }}">Catalog</a>
 					</li>
 					{# <li class="nav-item">
-						<a class="nav-link" href="{{ path('about') }}">About</a>
-					</li> #}
+																																																			<a class="nav-link" href="{{ path('about') }}">About</a>
+																																																		</li> #}
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('about') }}">Contact</a>
 					</li>
@@ -39,9 +39,18 @@
 					<i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
 					<span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{{ app.session.get('purchases').purchases | length }}</span>
 				</a>
-				<a class="nav-icon position-relative text-decoration-none" href="{{path('app_login',{}) }}">
-					<i class="fa fa-fw fa-user text-dark mr-3"></i>
-				</a>
+				{% if app.user %}
+					<div class="row mb-2">
+						<a class="col-4 text-decoration-none my-auto" href="{{path('app_login',{}) }}">
+							<img src="https://ui-avatars.com/api/?name={{ app.user.firstName }}+{{ app.user.lastName }}&rounded=true&background=5cb85c" class="imgIcon" alt="">
+						</a>
+						<a class="col-8 my-auto text-success text-decoration-none " href="{{ path('app_logout') }}">Logout</a>
+					</div>
+				{% else %}
+					<a class="nav-icon position-relative text-decoration-none" href="{{path('app_login',{}) }}">
+						<i class="fa fa-fw fa-user text-dark mr-3"></i>
+					</a>
+				{% endif %}
 			</div>
 		</div>
 

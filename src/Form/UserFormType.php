@@ -41,7 +41,7 @@ class UserFormType extends AbstractType
             ->add('phone', TextType::class, [
                 'required' => false,
                 'label' => 'Phone',
-                'attr' => []
+                'attr' => ['class' => 'form-input-bg']
             ])
             ->add('adress', TextType::class, [
                 'required' => true,
@@ -75,7 +75,7 @@ class UserFormType extends AbstractType
             ->add('postalCode', TextType::class, [
                 'required' => true,
                 'label' => 'Postal Code',
-                'attr' => []
+                'attr' => ['class' => 'form-input-bg']
             ])
             ->add('create', SubmitType::class, [
                 'label' => "Update",

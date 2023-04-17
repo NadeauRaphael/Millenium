@@ -40,23 +40,31 @@ class ProfileController extends AbstractController
         if ($formUser->isSubmitted() && $formUser->isValid()) {
             $this->em->persist($currentUser);
             $this->em->flush();
-            $message = "Profile updated succesfully.";
-            $notification = new Notification('Success', $message, NotificationColor::SUCCESS);
+            $this->addFlash('updateProfile', 
+            new Notification('Success', 'Profile updated succesfully.', NotificationColor::SUCCESS));
         }
 
         // Form password
         if ($formPassword->isSubmitted() && $formPassword->isValid()) {
-            if ($passwordHasher->isPasswordValid($currentUser, $formPassword->get('oldPassword')->getData())) {
-                $currentUser->setPassword(
-                    $passwordHasher->hashPassword(
-                        $currentUser,
-                        $formPassword->get('password')->getData()
-                    )
-                );
-                $this->em->persist($currentUser);
-                $this->em->flush();
-                $this->addFlash('update', 
-                new Notification('Success', 'Password updated succesfully.', NotificationColor::SUCCESS));
+            $oldPassword= $formPassword->get('oldPassword')->getData();
+            $newPassword= $formPassword->get('password')->getData();
+            if ($passwordHasher->isPasswordValid($currentUser, $oldPassword)) {
+                if($oldPassword == $newPassword){
+                    $this->addFlash('error', 
+                    new Notification('error', "The new password can't be the same as the current password", NotificationColor::DANGER));
+                }
+                else{
+                    $currentUser->setPassword(
+                        $passwordHasher->hashPassword(
+                            $currentUser,
+                            $formPassword->get('password')->getData()
+                        )
+                    );
+                    $this->em->persist($currentUser);
+                    $this->em->flush();
+                    $this->addFlash('updatePassword', 
+                    new Notification('Success', 'Password updated succesfully.', NotificationColor::SUCCESS));
+                }
             }else{
                 $this->addFlash('error', 
                 new Notification('error', "The password doesn't match the current password.", NotificationColor::DANGER));

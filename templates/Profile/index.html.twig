@@ -8,7 +8,7 @@
 
 	<div class="row mb-5">
 		<div class="col-lg-8 mx-auto">
-			{% for flash in app.flashes('update') %}
+			{% for flash in app.flashes('updateProfile') %}
 				<div class="alert mt-3 {{ flash.color }}">{{ flash.content }}</div>
 			{% endfor %}
 			{{ form_start(UserForm, {'attr': {'class': 'needs-validation-register', 'novalidate': 'novalidate' }}) }}
@@ -53,9 +53,6 @@
 						{{ form_row(UserForm.create) }}
 					</div>
 					{{ form_end(UserForm) }}
-					<span>
-						<a href="{{ path('app_logout') }}">Se déconnecter</a>
-					</span>
 				</div>
 			</div>
 		</div>
@@ -64,6 +61,9 @@
 		<div class="col-lg-8 mx-auto">
 			{% for flash in app.flashes('error') %}
 				<div class="alert {{ flash.color }}">{{ flash.content }}</div>
+			{% endfor %}
+			{% for flash in app.flashes('updatePassword') %}
+				<div class="alert mt-3 {{ flash.color }}">{{ flash.content }}</div>
 			{% endfor %}
 			<div class="card text-black mb-5 shadow-2-strong card-register" style="border-radius: 15px;">
 				<div class="card-body px-md-5">
