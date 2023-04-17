@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
 use App\Core\Notification;
 use App\Core\NotificationColor;
+use App\Form\UserFormType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,21 +15,25 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class ProfileController extends AbstractController
 {
     #[Route('/profile', name: 'app_profile')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $currentUser = $this->getUser();
+        $form = $this->createForm(UserFormType::class, $currentUser);
+        $form->handleRequest($request);
 
         return $this->render('profile/index.html.twig', [
-            'currentUser' => $currentUser
+            'currentUser' => $currentUser,
+            'UserForm' => $form->createView()
         ]);
     }
 
     #[Route('/login', name:'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response 
     {
+
         if($this->getUser()) {
             return $this->redirectToRoute('app_profile');
         }

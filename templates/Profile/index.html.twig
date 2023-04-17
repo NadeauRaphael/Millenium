@@ -5,6 +5,59 @@
 	<span>
 		<a href="{{ path('app_logout') }}">Se déconnecter</a>
 	</span>
+	<div class="row mb-5">
+		<div class="col-lg-8 mx-auto">
+			{% for flash in app.flashes('register')%}
+				<div class="alert my-3 {{ flash.color }}">{{ flash.content }}</div>
+			{% endfor %}
+			{{ form_start(UserForm, {'attr': {'class': 'needs-validation-register', 'novalidate': 'novalidate' }}) }}
+			<div class="card text-black mt-5 shadow-2-strong  card-register" style="border-radius: 15px;">
+				<div class="card-body p-md-5">
+					<h1 class="mb-2 pb-2 pb-md-0 mb-md-4 text-center text-success ">Account creation</h1>
+					<hr>
+					<div class="row">
+						<div class="col-6">
+							{{ form_row(UserForm.firstName) }}
+						</div>
+						<div class="col-6">
+							{{ form_row(UserForm.lastName) }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							{{ form_row(UserForm.password.first) }}
+						</div>
+						<div class="col-6">
+							{{ form_row(UserForm.password.second) }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-9">
+							{{ form_row(UserForm.adress) }}
+						</div>
+						<div class="col-3">
+							{{ form_row(UserForm.city) }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4">
+							{{ form_row(UserForm.postalCode) }}
+						</div>
+						<div class="col-4">
+							{{ form_row(UserForm.province) }}
+						</div>
+						<div class="col-4">
+							{{ form_row(UserForm.phone, {'attr': {'class': 'txtPhone'}}) }}
+						</div>
+					</div>
+					<div class="d-flex justify-content-center">
+						{{ form_row(UserForm.create) }}
+					</div>
+					{{ form_end(UserForm) }}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 

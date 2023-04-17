@@ -32,7 +32,7 @@ class RegistrationFormType extends UserFormType
         Parent::buildForm($builder, $options);
         $builder->add('email', TextType::class, [
                 'required' => true,
-                'label' => 'email',
+                'label' => 'Email',
                 'attr' => []
         ]);
     }
