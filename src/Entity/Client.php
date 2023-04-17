@@ -46,7 +46,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $city = null;
 
     #[ORM\Column(name:'postalCode')]
-    #[Assert\Regex(pattern:"/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i", message:"the postal code must respect the format")]
+    #[Assert\Regex(pattern:"/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i", message:"Postal code invalid. Format: A1A 1A1 (letters D-F-I-O-Q-U not allowed and W and Z not allowed in first position)")]
     private ?string $postalCode = null;
 
     #[ORM\Column(length:20, nullable:true)]

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Core\Notification;
+use App\Core\NotificationColor;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;

@@ -3,12 +3,12 @@
 	<link rel="stylesheet" href="{{asset('Styles/login.css')}}">
 {% endblock %}
 {% block content %}
-	{% if notification %}
-		<div class="alert {{ notification.color }}">{{ notification.content }}</div>
-	{% endif %}
 	<div class="row">
 		<div class="col-lg-8 mx-auto">
-			<div class="card text-black my-5 shadow-2-strong card-register" style="border-radius: 15px;">
+			{% if notification %}
+				<div class="alert mt-3 {{ notification.color }}">{{ notification.content }}</div>
+			{% endif %}
+			<div class="card text-black my-3 shadow-2-strong card-register" style="border-radius: 15px;">
 				<div class="card-body px-md-5">
 					<h1 class="mb-2 text-center text-success ">Login</h1>
 					<hr>
