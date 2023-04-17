@@ -52,6 +52,17 @@ class ProfileController extends AbstractController
             'notification' => $notification
         ]);
     }
+    #[Route('/passwordChange', name:'app_password_change')]
+    public function passwordChange(AuthenticationUtils $authenticationUtils): Response 
+    {
+
+        if($this->getUser()) {
+            return $this->redirectToRoute('app_profile');
+        }
+
+        return $this->render('profile/index.html.twig', []);
+    }
+
 
     #[Route('/logout', name:'app_logout')]
     public function logout() {

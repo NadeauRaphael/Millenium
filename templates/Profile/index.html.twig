@@ -7,7 +7,7 @@
 
 	<div class="row mb-5">
 		<div class="col-lg-8 mx-auto">
-			{% for flash in app.flashes('register')%}
+			{% for flash in app.flashes('profile')%}
 				<div class="alert my-3 {{ flash.color }}">{{ flash.content }}</div>
 			{% endfor %}
 			{{ form_start(UserForm, {'attr': {'class': 'needs-validation-register', 'novalidate': 'novalidate' }}) }}
@@ -55,6 +55,37 @@
 					<span>
 						<a href="{{ path('app_logout') }}">Se déconnecter</a>
 					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-8 mx-auto">
+			<div class="card text-black my-5 shadow-2-strong card-register" style="border-radius: 15px;">
+				<div class="card-body px-md-5">
+					<h1 class="mb-2 text-center text-success ">Password modification</h1>
+					<hr>
+					<form action="{{ path('app_password_change') }}" method="post">
+						<div class="form-outline">
+							<label class="form-label" for="password">Old Password:</label>
+							<input class="form-control form-input-bg" type="password" id="password" name="_password">
+						</div>
+						<div class="form-outline">
+							<label class="form-label" for="password">New Password:</label>
+							<input class="form-control form-input-bg" type="password" id="password" name="_password">
+						</div>
+						<div class="form-outline">
+							<label class="form-label" for="password">Password Confirmation:</label>
+							<input class="form-control form-input-bg" type="password" id="password" name="_password">
+						</div>
+						{# If you want to control the URL the user is redirected to on success #}
+						<input type="hidden" name="_target_path" value="{{ path('app_profile') }}">
+
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+						<div class="row text-center">
+							<button type="submit" class="btn btn-success btnLogin col-6 offset-3 mt-3">Change Password</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
