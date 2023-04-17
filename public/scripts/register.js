@@ -1,17 +1,9 @@
 $(document).ready(() => {
 
     $('.txtPhone').mask('000-000-0000', { placeholder : '___-___-____'});
-
-    //Masque poue la BETA KEY
-    $('.txtBetaKey').mask('A00000-ZZZZ-ZZZZ-ZZZZ-E', {   
-            placeholder:'_____-____-____-____-_', 
-            translation: { A: { pattern:/[YyKk]/ }, 
-                           Z: { pattern:/[a-zA-Z0-9]/ }, 
-                           E: { pattern:/[AaBb]/} 
-            } 
-        });
-
-    $('.txtBetaKey').keyup(function () {
+    $('.txtPostalCode').mask('A0E 0E0', { placeholder: '___-___', translation: { A:{ pattern: /[ABCEGHJ-NPRSTVXYabceghj-nprstvxy]/}, E:{pattern:/[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z]/} }});
+   
+    $('.txtPostalCode').keyup(function(){
         $(this).val($(this).val().toUpperCase());
     });
 

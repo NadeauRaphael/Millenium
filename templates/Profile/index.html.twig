@@ -1,10 +1,10 @@
 {% extends 'core/base.html.twig' %}
-
+{% form_theme UserForm 'bootstrap_5_layout.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('Styles/login.css')}}">
+{% endblock %}
 {% block content %}
-	<h1 class="mt-5">Profil</h1>
-	<span>
-		<a href="{{ path('app_logout') }}">Se déconnecter</a>
-	</span>
+
 	<div class="row mb-5">
 		<div class="col-lg-8 mx-auto">
 			{% for flash in app.flashes('register')%}
@@ -13,22 +13,20 @@
 			{{ form_start(UserForm, {'attr': {'class': 'needs-validation-register', 'novalidate': 'novalidate' }}) }}
 			<div class="card text-black mt-5 shadow-2-strong  card-register" style="border-radius: 15px;">
 				<div class="card-body p-md-5">
-					<h1 class="mb-2 pb-2 pb-md-0 mb-md-4 text-center text-success ">Account creation</h1>
+					<h1 class="mb-2 pb-2 pb-md-0 mb-md-4 text-center text-success ">Your Profil</h1>
 					<hr>
+					<div class="row">
+						<label class="col-3" for="username">Email :</label>
+						<div>
+							<input disabled class="form-control form-input-bg" type="email" value="{{currentUser.email}}">
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-6">
 							{{ form_row(UserForm.firstName) }}
 						</div>
 						<div class="col-6">
 							{{ form_row(UserForm.lastName) }}
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-6">
-							{{ form_row(UserForm.password.first) }}
-						</div>
-						<div class="col-6">
-							{{ form_row(UserForm.password.second) }}
 						</div>
 					</div>
 					<div class="row">
@@ -41,26 +39,28 @@
 					</div>
 					<div class="row">
 						<div class="col-4">
-							{{ form_row(UserForm.postalCode) }}
+							{{ form_row(UserForm.postalCode, {'attr': {'class': 'txtPostalCode form-input-bg'}}) }}
 						</div>
 						<div class="col-4">
 							{{ form_row(UserForm.province) }}
 						</div>
 						<div class="col-4">
-							{{ form_row(UserForm.phone, {'attr': {'class': 'txtPhone'}}) }}
+							{{ form_row(UserForm.phone, {'attr': {'class': 'txtPhone form-input-bg'}}) }}
 						</div>
 					</div>
 					<div class="d-flex justify-content-center">
 						{{ form_row(UserForm.create) }}
 					</div>
 					{{ form_end(UserForm) }}
+					<span>
+						<a href="{{ path('app_logout') }}">Se déconnecter</a>
+					</span>
 				</div>
 			</div>
 		</div>
 	</div>
 {% endblock %}
-
-
-{% block stylesheets %}{% endblock %}
-
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+	<script defer src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.16/dist/jquery.mask.min.js"></script>
+	<script defer src="{{ asset('scripts/register.js')}}"></script>
+{% endblock %}

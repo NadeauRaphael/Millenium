@@ -34,6 +34,15 @@ class RegistrationFormType extends UserFormType
                 'required' => true,
                 'label' => 'Email',
                 'attr' => []
+        ])
+        ->add('password', RepeatedType::class, [
+            'type' => PasswordType::class,
+            'invalid_message' => "Les mots de passe doivent etre identiques",
+            'constraints' => [new Assert\Length(min: 6, minMessage: "The password must containt at least {{ limit }} characters")],
+            'options' => ['attr' => ['class' => 'password-field']],
+            'required' => true,
+            'first_options' => ['label' => "Password"],
+            'second_options' => ['label' => "Password comfirmation"]
         ]);
     }
 }
