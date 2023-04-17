@@ -29,7 +29,7 @@ class PasswordFormType extends AbstractType
         $builder->add('oldPassword', PasswordType::class, [
             'invalid_message' => "The password must be identical.",
             'constraints' => [new Assert\Length(min: 6, minMessage: "The password must containt at least {{ limit }} characters")],
-            'attr' => ['class' => 'password-field'],
+            'attr' => ['class' => 'password-field form-input-bg'],
             'required' => true,
             'label' => 'Current Password'
         ])
@@ -37,7 +37,7 @@ class PasswordFormType extends AbstractType
             'type' => PasswordType::class,
             'invalid_message' => "The password must be identical.",
             'constraints' => [new Assert\Length(min: 6, minMessage: "The password must containt at least {{ limit }} characters")],
-            'options' => ['attr' => ['class' => 'password-field']],
+            'options' => ['attr' => ['class' => 'password-field form-input-bg']],
             'required' => true,
             'first_options' => ['label' => "New Password"],
             'second_options' => ['label' => "Password comfirmation"]
