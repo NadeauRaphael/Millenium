@@ -85,6 +85,14 @@ class Cart
         return $this -> getSubTotal() * (Constants::TVS);
     }
     public function getShippinCost(){
-        return Constants::SHIPPING_COST;
+        $Total = $this->getSubTotal() + $this->getTVQPrice() + $this->getTVSPrice();
+        if($Total != 0) return Constants::SHIPPING_COST;
+        return 0;
+    }
+    public function getTotalPrice(){
+        $Total = $this->getSubTotal() + $this->getTVQPrice() + $this->getTVSPrice();
+        if($Total == 0) return $Total;
+
+        return $Total + $this->getShippinCost();
     }
 }
