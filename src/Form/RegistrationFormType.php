@@ -37,7 +37,7 @@ class RegistrationFormType extends UserFormType
         ])
         ->add('password', RepeatedType::class, [
             'type' => PasswordType::class,
-            'invalid_message' => "Les mots de passe doivent etre identiques",
+            'invalid_message' => "The password must be identical.",
             'constraints' => [new Assert\Length(min: 6, minMessage: "The password must containt at least {{ limit }} characters")],
             'options' => ['attr' => ['class' => 'password-field form-input-bg']],
             'required' => true,
