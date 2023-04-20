@@ -26,18 +26,19 @@ class OrderController extends AbstractController
     }
 
     #[Route('/checkout', name: 'app_checkout')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // Nous sommes connectés
         $user = $this->getUser();
+        $this -> initSession($request);
 
         $successURL = $this->generateUrl('stripe_success', [], UrlGeneratorInterface::ABSOLUTE_URL) . "?stripe_id={CHECKOUT_SESSION_ID}";
         \Stripe\Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
         $sessionData = [
             'line_items' => [[
                 'quantity' => 1,
-                'price_data' => ['unit_amount' => 99, 'currency' => 'CAD', 'product_data' => ['name' => 'MicroTransaction CSTJ']]
+                'price_data' => ['unit_amount' => $this->cart->getTotalPriceStripe(), 'currency' => 'CAD', 'product_data' => ['name' => 'Millennium']]
             ]],
             'customer_email' => $user->getEmail(),
             'payment_method_types' => ['card'],

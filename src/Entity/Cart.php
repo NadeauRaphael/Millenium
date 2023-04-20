@@ -76,13 +76,13 @@ class Cart
         foreach ($this->purchases as $purchase) {
             $subTotal += $purchase->getPrice() * $purchase->getQuantity();
         }
-        return $subTotal;
+        return round($subTotal,2);
     }
     public function getTVQPrice(){
-        return $this -> getSubTotal() * (Constants::TVQ);
+        return round(($this -> getSubTotal() * (Constants::TVQ)),2);
     }
     public function getTVSPrice(){
-        return $this -> getSubTotal() * (Constants::TVS);
+        return round(($this -> getSubTotal() * (Constants::TVS)),2);
     }
     public function getShippinCost(){
         $Total = $this->getSubTotal() + $this->getTVQPrice() + $this->getTVSPrice();
@@ -93,6 +93,9 @@ class Cart
         $Total = $this->getSubTotal() + $this->getTVQPrice() + $this->getTVSPrice();
         if($Total == 0) return $Total;
 
-        return $Total + $this->getShippinCost();
+        return round(($Total + $this->getShippinCost()),2);
+    }
+    public function getTotalPriceStripe(){
+        return ($this->getTotalPrice()) *100;
     }
 }
