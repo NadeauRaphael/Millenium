@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Core\Constants;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -45,8 +46,16 @@ class Order
     #[ORM\OneToMany(mappedBy: 'theOrder', targetEntity: Purchase::class, orphanRemoval: true)]
     private Collection $Purchases;
 
-    public function __construct()
+    public function __construct(string $paymentIntent,Client $client)
     {
+        $this->orderDate = date_create();
+        $this->deliveryDate = null;
+        $this->rateTPS = Constants::TPS;
+        $this->rateTVQ = Constants::TVQ;
+        $this->deliveryFee = Constants::SHIPPING_COST;
+        $this->state = "In Preparation";
+        $this->stripeIntent = $paymentIntent;
+        $this->Client = $client;
         $this->Purchases = new ArrayCollection();
     }
 

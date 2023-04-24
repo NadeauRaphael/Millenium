@@ -81,21 +81,24 @@ class Cart
     public function getTVQPrice(){
         return round(($this -> getSubTotal() * (Constants::TVQ)),2);
     }
-    public function getTVSPrice(){
-        return round(($this -> getSubTotal() * (Constants::TVS)),2);
+    public function getTPSPrice(){
+        return round(($this -> getSubTotal() * (Constants::TPS)),2);
     }
     public function getShippinCost(){
-        $Total = $this->getSubTotal() + $this->getTVQPrice() + $this->getTVSPrice();
+        $Total = $this->getSubTotal() + $this->getTVQPrice() + $this->getTPSPrice();
         if($Total != 0) return Constants::SHIPPING_COST;
         return 0;
     }
     public function getTotalPrice(){
-        $Total = $this->getSubTotal() + $this->getTVQPrice() + $this->getTVSPrice();
+        $Total = $this->getSubTotal() + $this->getTVQPrice() + $this->getTPSPrice();
         if($Total == 0) return $Total;
 
         return round(($Total + $this->getShippinCost()),2);
     }
     public function getTotalPriceStripe(){
         return ($this->getTotalPrice()) *100;
+    }
+    public function empty(){
+        $this->purchases = [];
     }
 }

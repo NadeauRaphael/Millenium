@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Core\Notification;
+use App\Core\NotificationColor;
 use Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,10 +12,18 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use App\Entity\Cart;
+use App\Entity\Order;
+use Doctrine\ORM\EntityManagerInterface;
 
 class OrderController extends AbstractController
 {
+    private $em = null;
     private $cart;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
 
     #[Route('/review', name: 'app_review')]
     public function review(Request $request): Response
@@ -31,7 +41,7 @@ class OrderController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // Nous sommes connectés
         $user = $this->getUser();
-        $this -> initSession($request);
+        $this->initSession($request);
 
         $successURL = $this->generateUrl('stripe_success', [], UrlGeneratorInterface::ABSOLUTE_URL) . "?stripe_id={CHECKOUT_SESSION_ID}";
         \Stripe\Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
@@ -57,14 +67,47 @@ class OrderController extends AbstractController
     #[Route('/stripe-success', name: 'stripe_success')]
     public function stripeSuccess(Request $request): Response
     {
-        return $this->redirectToRoute('app_profile');
+        //Dans le TP 
+        //Créer un commande
+        //Transformer le panier en commande
+        //MaJ des Quantité des produits
+        //Vider le panier
+
+        //Nous avons un paiement
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->initSession($request);
+        $client = $this->getUser();
+        try {
+            $stripe = new \Stripe\StripeClient($_ENV["STRIPE_SECRET"]);
+            $stripeSessionId = $request->query->get('stripe_id');
+            $sessionStripe = $stripe->checkout->sessions->retrieve($stripeSessionId);
+            // Payment intent to save in BD
+            $paymentIntent = $sessionStripe->payment_intent;
+            $order = new Order($paymentIntent, $client);
+            foreach ($this->cart->getPurchases() as $purchase) {
+                 //Merge Purchase
+                 $order->addPurchase($this->em->merge($purchase));
+            }
+
+            $this->cart->empty();
+            $this->em->persist($order);
+            $this->em->flush();
+        } catch (\Exception $e) {
+            $this->addFlash(
+                'update',
+                new Notification('Error', 'Error with the order', NotificationColor::DANGER)
+            );
+            return $this->redirectToRoute('app_cart');
+        }
+        return $this->redirectToRoute('app_cart');
     }
-    
+
     #[Route('/stripe-cancel', name: 'stripe_cancel')]
     public function stripeCancel(): Response
     {
         return $this->redirectToRoute('app_review');
     }
+
     // TODO: DONT HAVE TO MAKE THIS FUNCTION IN THREE CONTROLLER
     // Put in public to fix some problem i've encountered in the catalog page
     // Had to init the session in the catalog too
