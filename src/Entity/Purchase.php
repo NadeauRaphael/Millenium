@@ -65,4 +65,7 @@ class Purchase
     public function getTotalPrice(){
         return $this -> price * $this -> quantity;
     }
+    public function setProductQuantity(){
+        $this->product->reduceStockQuantity($this->quantity);
+    }
 }

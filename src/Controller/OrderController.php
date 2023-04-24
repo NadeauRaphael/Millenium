@@ -87,6 +87,7 @@ class OrderController extends AbstractController
             foreach ($this->cart->getPurchases() as $purchase) {
                  //Merge Purchase
                  $order->addPurchase($this->em->merge($purchase));
+                 $purchase->setProductQuantity();
             }
 
             $this->cart->empty();

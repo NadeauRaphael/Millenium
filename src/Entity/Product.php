@@ -6,12 +6,12 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ORM\Table(name:'Products')]
+#[ORM\Table(name: 'Products')]
 class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name:'idProduct')]
+    #[ORM\Column(name: 'idProduct')]
     private ?int $idProduct = null;
 
     #[ORM\Column(length: 50)]
@@ -24,13 +24,13 @@ class Product
     #[ORM\JoinColumn(name: 'idCategory', referencedColumnName: 'idCategory')]
     private $category;
 
-    #[ORM\Column(name:'stockQuantity')]
+    #[ORM\Column(name: 'stockQuantity')]
     private ?int $stockQuantity = null;
 
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 50, nullable: true, name:'imgPath')]
+    #[ORM\Column(length: 50, nullable: true, name: 'imgPath')]
     private ?string $imgPath = null;
 
 
@@ -71,13 +71,11 @@ class Product
         return $this->stockQuantity;
     }
 
-    // public function setStockQuantity(int $stockQuantity): self
-    // {
-    //     $this->stockQuantity = $stockQuantity;
-
-    //     return $this;
-    // }
-
+    public function setStockQuantity(int $stockQuantity): self
+    {
+        $this->stockQuantity = $stockQuantity;
+        return $this;
+    }
     public function getDescription(): ?string
     {
         return $this->description;
@@ -101,4 +99,7 @@ class Product
 
     //     return $this;
     // }
+    public function reduceStockQuantity($quantity){
+        $this->setStockQuantity($this->stockQuantity - $quantity);
+    }
 }
