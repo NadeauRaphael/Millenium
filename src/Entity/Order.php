@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,6 +37,18 @@ class Order
 
     #[ORM\Column(length: 255,name:'stripeIntent')]
     private ?string $stripeIntent = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(name:'idClient',referencedColumnName:'idClient',nullable: false)]
+    private ?Client $Client = null;
+
+    #[ORM\OneToMany(mappedBy: 'theOrder', targetEntity: Purchase::class, orphanRemoval: true)]
+    private Collection $Purchases;
+
+    public function __construct()
+    {
+        $this->Purchases = new ArrayCollection();
+    }
 
     public function getIdOrder(): ?int
     {
@@ -121,6 +135,48 @@ class Order
     public function setStripeIntent(string $stripeIntent): self
     {
         $this->stripeIntent = $stripeIntent;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->Client;
+    }
+
+    public function setClient(?Client $Client): self
+    {
+        $this->Client = $Client;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Purchase>
+     */
+    public function getPurchases(): Collection
+    {
+        return $this->Purchases;
+    }
+
+    public function addPurchase(Purchase $purchase): self
+    {
+        if (!$this->Purchases->contains($purchase)) {
+            $this->Purchases->add($purchase);
+            $purchase->setTheOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removePurchase(Purchase $purchase): self
+    {
+        if ($this->Purchases->removeElement($purchase)) {
+            // set the owning side to null (unless already changed)
+            if ($purchase->getTheOrder() === $this) {
+                $purchase->setTheOrder(null);
+            }
+        }
 
         return $this;
     }
