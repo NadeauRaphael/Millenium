@@ -38,7 +38,7 @@ class Order
     #[ORM\Column(length: 255,name:'stripeIntent')]
     private ?string $stripeIntent = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\ManyToOne(targetEntity:Client::class,inversedBy: 'orders',cascade:["persist"])]
     #[ORM\JoinColumn(name:'idClient',referencedColumnName:'idClient',nullable: false)]
     private ?Client $Client = null;
 
