@@ -68,24 +68,9 @@ class Order
     {
         return $this->orderDate;
     }
-
-    public function setOrderDate(\DateTimeInterface $orderDate): self
-    {
-        $this->orderDate = $orderDate;
-
-        return $this;
-    }
-
     public function getDeliveryDate(): ?\DateTimeInterface
     {
         return $this->deliveryDate;
-    }
-
-    public function setDeliveryDate(\DateTimeInterface $deliveryDate): self
-    {
-        $this->deliveryDate = $deliveryDate;
-
-        return $this;
     }
 
     public function getRateTPS(): ?float
@@ -93,23 +78,9 @@ class Order
         return $this->rateTPS;
     }
 
-    public function setRateTPS(float $rateTPS): self
-    {
-        $this->rateTPS = $rateTPS;
-
-        return $this;
-    }
-
     public function getRateTVQ(): ?float
     {
         return $this->rateTVQ;
-    }
-
-    public function setRateTVQ(float $rateTVQ): self
-    {
-        $this->rateTVQ = $rateTVQ;
-
-        return $this;
     }
 
     public function getDeliveryFee(): ?float
@@ -117,23 +88,9 @@ class Order
         return $this->deliveryFee;
     }
 
-    public function setDeliveryFee(float $deliveryFee): self
-    {
-        $this->deliveryFee = $deliveryFee;
-
-        return $this;
-    }
-
     public function getState(): ?string
     {
         return $this->state;
-    }
-
-    public function setState(string $state): self
-    {
-        $this->state = $state;
-
-        return $this;
     }
 
     public function getStripeIntent(): ?string
@@ -141,23 +98,16 @@ class Order
         return $this->stripeIntent;
     }
 
-    public function setStripeIntent(string $stripeIntent): self
-    {
-        $this->stripeIntent = $stripeIntent;
-
-        return $this;
-    }
-
     public function getClient(): ?Client
     {
         return $this->Client;
     }
-
-    public function setClient(?Client $Client): self
-    {
-        $this->Client = $Client;
-
-        return $this;
+    public function getTotal(){
+        $total = 0;
+        foreach ($this->Purchases as $purchase) {
+            $total += $purchase->getTotalPrice();
+        }
+        return $total;
     }
 
     /**
@@ -167,24 +117,11 @@ class Order
     {
         return $this->Purchases;
     }
-
     public function addPurchase(Purchase $purchase): self
     {
         if (!$this->Purchases->contains($purchase)) {
             $this->Purchases->add($purchase);
             $purchase->setTheOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removePurchase(Purchase $purchase): self
-    {
-        if ($this->Purchases->removeElement($purchase)) {
-            // set the owning side to null (unless already changed)
-            if ($purchase->getTheOrder() === $this) {
-                $purchase->setTheOrder(null);
-            }
         }
 
         return $this;

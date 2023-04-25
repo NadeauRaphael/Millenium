@@ -102,12 +102,20 @@ class ProfileController extends AbstractController
             'notification' => $notification
         ]);
     }
+    #[Route('/orders', name: 'app_orders')]
+    public function orders()
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $currentUser = $this->getUser();
 
+        return $this->render('profile/orders.html.twig', [
+            "currentUser" => $currentUser
+        ]);
+    }
 
     #[Route('/logout', name: 'app_logout')]
     public function logout()
     {
-
         throw new \Exception("Don't forget to activate logout in security.yaml");
     }
 }
