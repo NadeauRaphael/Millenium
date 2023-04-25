@@ -8,10 +8,11 @@ table th {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  vertical-align: middle;
+  border: 1px solid lightgray;
 }
 thead th{
-    border-bottom: white;
-    border-right: 1px black;
+    border: white;
 }
 .card {
   border-radius: .5rem;
@@ -46,4 +47,8 @@ main{
 }
 .label{
   color:#212529;
+}
+.img-table{
+  width: auto;
+  height: 150px;
 }
