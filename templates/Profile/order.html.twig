@@ -1,4 +1,69 @@
 {% extends 'core/base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('Styles/order.css')}}">
+{% endblock %}
 {% block content %}
-    
+	<div class="row">
+		<div class="card text-black my-3 shadow-2-strong card-table" style="border-radius: 15px;">
+			<div class="card-body px-md-5">
+				<div class="row">
+					<h4 class="col-6">Order #{{ order.idOrder }}</h4>
+					<h4 class="col-6 text-end">{{ order.state }}</h4>
+				</div>
+				<hr class="mt-1">
+				<div class="row">
+					<div class="text-black my-3 shadow-2-strong col-5 card-info" style="border-radius: 10px;">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-6 label"># Order</div>
+								<div class="col-6 text-end">{{ order.idOrder }}</div>
+							</div>
+							<div class="row">
+								<div class="col-6">Item Number</div>
+								<div class="col-6 text-end">{{ order.Purchases.count() }}
+									Items</div>
+							</div>
+							<div class="row">
+								<div class="col-6">Order Date</div>
+								<div class="col-6 text-end">{{ order.orderDate|date("Y-m-d h:m:s") }}</div>
+							</div>
+							<div class="row">
+								<div class="col-6">Delivery Date</div>
+								<div class="col-6 text-end">Coming soon</div>
+							</div>
+						</div>
+					</div>
+					<div class="text-black my-3 mx-4 shadow-2-strong col-4 card-info" style="border-radius: 10px;">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-6 label">SubTotal</div>
+								<div class="col-6 text-end">{{  order.getSubtotal() | number_format(2, ',', ' ')}} $</div>
+							</div>
+							<div class="row">
+								<div class="col-6">Rabais</div>
+								<div class="col-6 text-end">0,00$</div>
+							</div>
+							<div class="row">
+								<div class="col-6">Delivery Fee</div>
+								<div class="col-6 text-end">{{ order.deliveryFee | number_format(2, ',', ' ')}}</div>
+							</div>
+							<div class="row">
+								<div class="col-6">Total (With taxe)</div>
+								<div class="col-6 text-end">{{ order.getTotal()| number_format(2, ',', ' ')}} $</div>
+							</div>
+						</div>
+					</div>
+                    <div class="text-black my-3 shadow-2-strong col-2 card-info" style="border-radius: 10px;">
+						<div class="card-body">
+                        <div class="mb-2">Delivery Adress</div>
+                        <div>
+                            <p class="my-0">{{ app.user.firstName }} {{app.user.LastName}}</p>
+                            <p class="my-0">{{app.user.adress}}</p>
+                            <p class="my-0"> {{ app.user.city}}, {{app.user.postalCode}}</p>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Core\Notification;
 use App\Core\NotificationColor;
+use App\Entity\Order;
 use App\Form\PasswordFormType;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Form\UserFormType;
@@ -110,6 +111,16 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/orders.html.twig', [
             "currentUser" => $currentUser
+        ]);
+    }
+    #[Route('/order/{idOrder}', name: 'app_order')]
+    public function order($idOrder,Request $request)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $Order = $this->em->getRepository(Order::class)->find($idOrder);
+        
+        return $this->render('profile/order.html.twig', [
+            "order" => $Order
         ]);
     }
 

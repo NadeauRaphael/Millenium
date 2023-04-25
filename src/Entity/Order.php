@@ -102,14 +102,22 @@ class Order
     {
         return $this->Client;
     }
-    public function getTotal(){
+    public function getSubtotal(){
         $total = 0;
         foreach ($this->Purchases as $purchase) {
             $total += $purchase->getTotalPrice();
         }
         return $total;
     }
-
+    public function getTotal(){
+        return $this->getSubTotal() + $this->getTVQPrice() + $this->getTPSPrice();
+    }
+    public function getTVQPrice(){
+        return round(($this -> getSubTotal() * $this->rateTVQ),2);
+    }
+    public function getTPSPrice(){
+        return round(($this -> getSubTotal() * $this->rateTPS),2);
+    }
     /**
      * @return Collection<int, Purchase>
      */
