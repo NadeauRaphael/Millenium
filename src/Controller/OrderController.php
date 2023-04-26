@@ -102,7 +102,7 @@ class OrderController extends AbstractController
             );
             return $this->redirectToRoute('app_cart');
         }
-        return $this->redirectToRoute('app_cart');
+        return $this->redirectToRoute('app_order',['idOrder' => $order->getIdOrder()]);
     }
 
     #[Route('/stripe-cancel', name: 'stripe_cancel')]
