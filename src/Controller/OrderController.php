@@ -30,6 +30,9 @@ class OrderController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->initSession($request);
+        if($this->cart->getTotalPriceStripe() == 0.00){
+            return $this->redirectToRoute('app_cart');
+        }
         return $this->render('order/Review.html.twig', [
             'cart' => $this->cart
         ]);
@@ -42,7 +45,6 @@ class OrderController extends AbstractController
         // Nous sommes connectés
         $user = $this->getUser();
         $this->initSession($request);
-
         $successURL = $this->generateUrl('stripe_success', [], UrlGeneratorInterface::ABSOLUTE_URL) . "?stripe_id={CHECKOUT_SESSION_ID}";
         \Stripe\Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
         $sessionData = [
