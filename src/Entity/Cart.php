@@ -102,7 +102,6 @@ class Cart
         $this->purchases = [];
     }
     public function isEmpty(){
-        if (sizeof($this->purchases) === 0) return true;
-        return false;
+       return empty($this->purchases);
     }
 }
