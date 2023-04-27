@@ -20,20 +20,20 @@
 							<div class="text-black my-3 shadow-2-strong  col card-info card" style="border-radius: 10px;">
 								<div class="card-body">
 									<div class="row">
-										<div class="col-6 label"># Order</div>
+										<div class="col-6 label"><b># Order</b></div>
 										<div class="col-6 text-end">{{ order.idOrder }}</div>
 									</div>
 									<div class="row">
-										<div class="col-6">Item Number</div>
+										<div class="col-6"><b>Item Number</b></div>
 										<div class="col-6 text-end">{{ order.Purchases.count() }}
 											Items</div>
 									</div>
 									<div class="row">
-										<div class="col-6">Order Date</div>
+										<div class="col-6"><b>Order Date</b></div>
 										<div class="col-6 text-end">{{ order.orderDate|date("Y-m-d h:m:s") }}</div>
 									</div>
 									<div class="row">
-										<div class="col-6">Delivery Date</div>
+										<div class="col-6"><b>Delivery Date</b></div>
 										<div class="col-6 text-end">Coming soon</div>
 									</div>
 								</div>
@@ -43,20 +43,20 @@
 							<div class="text-black my-3 shadow-2-strong col card-info card " style="border-radius: 10px;">
 								<div class="card-body">
 									<div class="row">
-										<div class="col-6 label">SubTotal</div>
+										<div class="col-6 label"><b>SubTotal</b></div>
 										<div class="col-6 text-end">{{  order.getSubtotal() | number_format(2, ',', ' ')}}
 											$</div>
 									</div>
 									<div class="row">
-										<div class="col-6">Rabais</div>
+										<div class="col-6"><b>Rabais</b></div>
 										<div class="col-6 text-end">0,00$</div>
 									</div>
 									<div class="row">
-										<div class="col-6">Delivery Fee</div>
+										<div class="col-6"><b>Delivery Fee</b></div>
 										<div class="col-6 text-end">{{ order.deliveryFee | number_format(2, ',', ' ')}}</div>
 									</div>
 									<div class="row">
-										<div class="col-6">Total (With taxe)</div>
+										<div class="col-6"><b>Total (With taxe)</b></div>
 										<div class="col-6 text-end">{{ order.getTotal()| number_format(2, ',', ' ')}}
 											$</div>
 									</div>
