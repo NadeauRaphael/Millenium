@@ -67,7 +67,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'Client', targetEntity: Order::class,orphanRemoval: true, cascade:['persist'])]
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Order::class,orphanRemoval: true, cascade:['persist'])]
     private Collection $orders;
 
     public function __construct()

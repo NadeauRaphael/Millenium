@@ -43,6 +43,12 @@ class Purchase
     public function getProduct(){
         return $this -> product;
     }
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
+    }
     public function getQuantity(){
         return $this -> quantity;
     }
@@ -64,8 +70,5 @@ class Purchase
     }
     public function getTotalPrice(){
         return $this -> price * $this -> quantity;
-    }
-    public function setProductQuantity(){
-        $this->product->reduceStockQuantity($this->quantity);
     }
 }

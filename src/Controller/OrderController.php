@@ -69,33 +69,47 @@ class OrderController extends AbstractController
     #[Route('/stripe-success', name: 'stripe_success')]
     public function stripeSuccess(Request $request): Response
     {
-        //Dans le TP 
-        //Créer un commande
-        //Transformer le panier en commande
-        //MaJ des Quantité des produits
-        //Vider le panier
-
-        //Nous avons un paiement
+        //Paiment
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->initSession($request);
         $client = $this->getUser();
+        $msgErr="";
         try {
             $stripe = new \Stripe\StripeClient($_ENV["STRIPE_SECRET"]);
             $stripeSessionId = $request->query->get('stripe_id');
             $sessionStripe = $stripe->checkout->sessions->retrieve($stripeSessionId);
             // Payment intent to save in BD
             $paymentIntent = $sessionStripe->payment_intent;
-            $order = new Order($paymentIntent, $client);
-            foreach ($this->cart->getPurchases() as $purchase) {
+            $order = new Order($paymentIntent, $client,$this->cart);
+            foreach ($order->getPurchases() as $purchase) {
                  //Merge Purchase
-                 $order->addPurchase($this->em->merge($purchase));
-                 $purchase->setProductQuantity();
-            }
+                 $newProduct = $this->em->merge($purchase->getProduct());
 
-            $this->cart->empty();
+                 if(!($newProduct->Sold($purchase->getQuantity()))){
+                    $msgErr .= 'Product '.$newProduct->getName().' is out of stock <br>';
+                 }
+                 $purchase->setProduct($newProduct);
+                 $order->addPurchase($purchase);   
+            }
             $this->em->persist($order);
             $this->em->flush();
+            $this->cart->empty();
+
+            // Product out of stock
+            if($msgErr != ""){
+                $this->addFlash(
+                    'update',
+                    new Notification('Out of stock', $msgErr . 'The order number ' . $order->getIdOrder(). " will be delivered as soon as the product come back in stock" , NotificationColor::INFO)
+                ); 
+            }
+            else{
+                $this->addFlash(
+                    'update',
+                    new Notification('Success', "The order ".$order->getIdOrder()." was proceded, will be delivered soon" , NotificationColor::SUCCESS)
+                ); 
+            }
         } catch (\Exception $e) {
+            dd($e);
             $this->addFlash(
                 'update',
                 new Notification('Error', 'Error with the order', NotificationColor::DANGER)

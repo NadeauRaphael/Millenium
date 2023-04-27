@@ -71,11 +71,11 @@ class Product
         return $this->stockQuantity;
     }
 
-    public function setStockQuantity(int $stockQuantity): self
-    {
-        $this->stockQuantity = $stockQuantity;
-        return $this;
-    }
+    // public function setStockQuantity(int $stockQuantity): self
+    // {
+    //     $this->stockQuantity = $stockQuantity;
+    //     return $this;
+    // }
     public function getDescription(): ?string
     {
         return $this->description;
@@ -99,7 +99,12 @@ class Product
 
     //     return $this;
     // }
-    public function reduceStockQuantity($quantity){
-        $this->setStockQuantity($this->stockQuantity - $quantity);
+    public function sold($quantity){
+        $newQuantity = $this->stockQuantity - $quantity;
+        $this->stockQuantity = $newQuantity;
+        if($newQuantity<=0) { 
+            return false;
+        }
+        return true;
     }
 }

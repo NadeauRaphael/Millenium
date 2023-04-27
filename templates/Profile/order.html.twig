@@ -12,6 +12,9 @@
 				</div>
 				<hr class="mt-1">
 				<div class="container">
+					{% for flash in app.flashes('update') %}
+						<div class="alert {{ flash.color }}">{{ flash.content|raw }}</div>
+					{% endfor %}
 					<div class="row gx-3">
 						<div class="col-5">
 							<div class="text-black my-3 shadow-2-strong  col card-info card" style="border-radius: 10px;">

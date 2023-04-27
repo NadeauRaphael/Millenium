@@ -41,12 +41,12 @@ class Order
 
     #[ORM\ManyToOne(targetEntity:Client::class,inversedBy: 'orders',cascade:["persist"])]
     #[ORM\JoinColumn(name:'idClient',referencedColumnName:'idClient',nullable: false)]
-    private ?Client $Client = null;
+    private ?Client $client = null;
 
-    #[ORM\OneToMany(mappedBy: 'theOrder', targetEntity: Purchase::class, orphanRemoval: true)]
-    private Collection $Purchases;
+    #[ORM\OneToMany(mappedBy: 'theOrder', targetEntity: Purchase::class, orphanRemoval: true,cascade:["persist"])]
+    private Collection $purchases;
 
-    public function __construct(string $paymentIntent,Client $client)
+    public function __construct(string $paymentIntent,Client $client,Cart $cart)
     {
         $this->orderDate = date_create();
         $this->deliveryDate = null;
@@ -55,8 +55,13 @@ class Order
         $this->deliveryFee = Constants::SHIPPING_COST;
         $this->state = "In Preparation";
         $this->stripeIntent = $paymentIntent;
-        $this->Client = $client;
-        $this->Purchases = new ArrayCollection();
+        $this->client = $client;
+        $this->purchases = new ArrayCollection();
+
+        foreach ($cart->getPurchases() as $purchase) {
+            $this->purchases->add($purchase);
+            $purchase->setTheOrder($this);
+        }
     }
 
     public function getIdOrder(): ?int
@@ -100,11 +105,11 @@ class Order
 
     public function getClient(): ?Client
     {
-        return $this->Client;
+        return $this->client;
     }
     public function getSubtotal(){
         $total = 0;
-        foreach ($this->Purchases as $purchase) {
+        foreach ($this->purchases as $purchase) {
             $total += $purchase->getTotalPrice();
         }
         return $total;
@@ -123,12 +128,12 @@ class Order
      */
     public function getPurchases(): Collection
     {
-        return $this->Purchases;
+        return $this->purchases;
     }
     public function addPurchase(Purchase $purchase): self
     {
-        if (!$this->Purchases->contains($purchase)) {
-            $this->Purchases->add($purchase);
+        if (!$this->purchases->contains($purchase)) {
+            $this->purchases->add($purchase);
             $purchase->setTheOrder($this);
         }
 
