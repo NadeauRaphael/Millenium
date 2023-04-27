@@ -30,7 +30,7 @@ class OrderController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->initSession($request);
-        if($this->cart->getTotalPriceStripe() == 0.00){
+        if($this->cart->isEmpty()){
             return $this->redirectToRoute('app_cart');
         }
         return $this->render('order/Review.html.twig', [
