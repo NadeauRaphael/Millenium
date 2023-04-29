@@ -128,10 +128,7 @@ class OrderController extends AbstractController
         );
         return $this->redirectToRoute('app_cart');
     }
-
-    // TODO: DONT HAVE TO MAKE THIS FUNCTION IN THREE CONTROLLER
-    // Put in public to fix some problem i've encountered in the catalog page
-    // Had to init the session in the catalog too
+    
     public function initSession(Request $request)
     {
         $session = $request->getSession();
