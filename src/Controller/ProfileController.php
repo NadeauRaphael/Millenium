@@ -103,27 +103,6 @@ class ProfileController extends AbstractController
             'notification' => $notification
         ]);
     }
-    #[Route('/orders', name: 'app_orders')]
-    public function orders()
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $currentUser = $this->getUser();
-
-        return $this->render('Order/orders.html.twig', [
-            "currentUser" => $currentUser
-        ]);
-    }
-    #[Route('/order/{idOrder}', name: 'app_order')]
-    public function order($idOrder,Request $request)
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $Order = $this->em->getRepository(Order::class)->find($idOrder);
-        
-        return $this->render('Order/order.html.twig', [
-            "order" => $Order
-        ]);
-    }
-
     #[Route('/logout', name: 'app_logout')]
     public function logout()
     {

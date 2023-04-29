@@ -37,6 +37,32 @@ class OrderController extends AbstractController
             'cart' => $this->cart
         ]);
     }
+    
+    #[Route('/orders', name: 'app_orders')]
+    public function orders()
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $currentUser = $this->getUser();
+
+        return $this->render('Order/orders.html.twig', [
+            "currentUser" => $currentUser
+        ]);
+    }
+    #[Route('/order/{idOrder}', name: 'app_order')]
+    public function order($idOrder,Request $request)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $order = $this->em->getRepository(Order::class)->find($idOrder);
+        if($order == null){
+            return $this->redirectToRoute('app_orders');
+        }
+        if($order->getClient() != $this->getUser()){
+            return $this->redirectToRoute('app_profile');
+        }
+        return $this->render('Order/order.html.twig', [
+            "order" => $order
+        ]);
+    }
 
     #[Route('/checkout', name: 'app_checkout')]
     public function index(Request $request): Response
