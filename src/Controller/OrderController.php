@@ -91,6 +91,7 @@ class OrderController extends AbstractController
                  $purchase->setProduct($newProduct);
                  $order->addPurchase($purchase);   
             }
+            $order->inPreparation();
             $this->em->persist($order);
             $this->em->flush();
             $this->cart->empty();

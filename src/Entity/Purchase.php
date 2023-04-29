@@ -6,7 +6,7 @@ use App\Repository\PurchaseRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
-#[ORM\Table(name: '`Purchases`')]
+#[ORM\Table(name: '`purchases`')]
 class Purchase
 {
     #[ORM\Id]
@@ -14,7 +14,7 @@ class Purchase
     #[ORM\Column(name:'idPurchase')]
     private ?int $idPurchase = null;
 
-    #[ORM\ManyToOne(targetEntity:Product::class,inversedBy: 'Purchases', cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity:Product::class,inversedBy: 'purchases', cascade: ["persist"])]
     #[ORM\JoinColumn(name:'idProduct',referencedColumnName:'idProduct',nullable: false)]
     private ?Product $product = null;
 
@@ -24,7 +24,7 @@ class Purchase
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\ManyToOne(targetEntity:Order::class,inversedBy:'Purchases',cascade:["persist"])]
+    #[ORM\ManyToOne(targetEntity:Order::class,inversedBy:'purchases',cascade:["persist"])]
     #[ORM\JoinColumn(name:'idOrder',referencedColumnName:'idOrder',nullable: false)]
     private ?Order $theOrder = null;
     

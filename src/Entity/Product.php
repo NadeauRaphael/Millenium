@@ -6,7 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ORM\Table(name: 'Products')]
+#[ORM\Table(name: 'products')]
 class Product
 {
     #[ORM\Id]
@@ -20,7 +20,7 @@ class Product
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: "Products", cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: "products", cascade: ["persist"])]
     #[ORM\JoinColumn(name: 'idCategory', referencedColumnName: 'idCategory')]
     private $category;
 

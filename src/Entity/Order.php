@@ -53,7 +53,7 @@ class Order
         $this->rateTPS = Constants::TPS;
         $this->rateTVQ = Constants::TVQ;
         $this->deliveryFee = Constants::SHIPPING_COST;
-        $this->state = "In Preparation";
+        $this->state = "New";
         $this->stripeIntent = $paymentIntent;
         $this->client = $client;
         $this->purchases = new ArrayCollection();
@@ -138,5 +138,8 @@ class Order
         }
 
         return $this;
+    }
+    public function inPreparation(){
+        $this->state = "In Preparation";
     }
 }
