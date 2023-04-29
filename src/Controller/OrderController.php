@@ -110,7 +110,6 @@ class OrderController extends AbstractController
                 ); 
             }
         } catch (\Exception $e) {
-            dd($e);
             $this->addFlash(
                 'update',
                 new Notification('Error', 'Error with the order', NotificationColor::DANGER)
@@ -123,7 +122,11 @@ class OrderController extends AbstractController
     #[Route('/stripe-cancel', name: 'stripe_cancel')]
     public function stripeCancel(): Response
     {
-        return $this->redirectToRoute('app_review');
+        $this->addFlash(
+            'update',
+            new Notification('Error', 'Error with the order, please try again.', NotificationColor::DANGER)
+        );
+        return $this->redirectToRoute('app_cart');
     }
 
     // TODO: DONT HAVE TO MAKE THIS FUNCTION IN THREE CONTROLLER
