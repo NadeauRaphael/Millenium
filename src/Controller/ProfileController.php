@@ -109,7 +109,7 @@ class ProfileController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $currentUser = $this->getUser();
 
-        return $this->render('profile/orders.html.twig', [
+        return $this->render('Order/orders.html.twig', [
             "currentUser" => $currentUser
         ]);
     }
@@ -119,7 +119,7 @@ class ProfileController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $Order = $this->em->getRepository(Order::class)->find($idOrder);
         
-        return $this->render('profile/order.html.twig', [
+        return $this->render('Order/order.html.twig', [
             "order" => $Order
         ]);
     }

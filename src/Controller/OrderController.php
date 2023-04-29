@@ -33,7 +33,7 @@ class OrderController extends AbstractController
         if($this->cart->isEmpty()){
             return $this->redirectToRoute('app_cart');
         }
-        return $this->render('order/Review.html.twig', [
+        return $this->render('Order/Review.html.twig', [
             'cart' => $this->cart
         ]);
     }
@@ -63,7 +63,7 @@ class OrderController extends AbstractController
         $checkoutSession = \Stripe\Checkout\Session::create($sessionData);
         return $this->redirect($checkoutSession->url, 303);
 
-        return $this->render('order/index.html.twig', []);
+        return $this->render('Order/index.html.twig', []);
     }
 
     #[Route('/stripe-success', name: 'stripe_success')]
