@@ -73,7 +73,7 @@ class ProfileController extends AbstractController
         }
 
         
-        return $this->render('profile/index.html.twig', [
+        return $this->render('Profile/index.html.twig', [
             'currentUser' => $currentUser,
             'UserForm' => $formUser->createView(),
             'PasswordForm' => $formPassword->createView(),
@@ -98,7 +98,7 @@ class ProfileController extends AbstractController
 
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('profile/login.html.twig', [
+        return $this->render('Profile/login.html.twig', [
             'last_username' => $lastUsername,
             'notification' => $notification
         ]);
