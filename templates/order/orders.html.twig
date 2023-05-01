@@ -9,7 +9,7 @@
 				<h1 class="mb-2 text-center text-success ">Orders</h1>
 				<hr>
 				<div class="col-8 mx-auto">
-					{% if currentUser.orders| length > 0 %}
+					{% if app.user.orders| length > 0 %}
 
 						<table class="table text-center table-wrap table-custom table-scroll">
 							<thead style="background-color: #f5f6f7;">
@@ -20,7 +20,7 @@
 								<th>Details</th>
 							</thead>
 							<tbody>
-								{% for order in currentUser.orders %}
+								{% for order in orders %}
 									<tr>
 										<th scope="row ">{{ order.idOrder }}</th>
 										<th>{{ order.orderDate|date("Y-m-d h:m:s") }}</th>

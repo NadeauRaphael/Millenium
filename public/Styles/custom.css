@@ -1,50 +1,63 @@
-.imgCustom{
+.imgCustom {
     height: 300px;
     width: 300px;
     overflow: hidden;
 }
-.imgIcon{
+
+.imgIcon {
     height: 35px;
     margin-right: 0;
 }
-.imgModal{
+
+.imgModal {
     height: 150px;
     width: 150px;
     overflow: hidden;
 }
 
-@media (min-width: 1025px) {
-    .h-custom {
-    height: 100vh !important;
-    }
-    }
-    
-    .card-registration .select-input.form-control[readonly]:not([disabled]) {
-    font-size: 1rem;
-    line-height: 2.15;
-    padding-left: .75em;
-    padding-right: .75em;
-    }
-    
-    .card-registration .select-arrow {
-    top: 13px;
-    }
-    
-    .bg-grey {
-    background-color: #eae8e8;
-    }
-    
-    @media (min-width: 992px) {
-    .card-registration-2 .bg-grey {
-    border-top-right-radius: 16px;
-    border-bottom-right-radius: 16px;
-    }
-    }
-    
-    @media (max-width: 991px) {
-    .card-registration-2 .bg-grey {
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    }
-    }
-    
+/* Dropdown Button */
+.dropbtn {
+    background-color: white;
+    color: white;
+    font-size: 16px;
+    border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: white;
+}

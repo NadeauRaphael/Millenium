@@ -231,7 +231,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
     public function removeOrder(Order $order): self
     {
         if ($this->orders->removeElement($order)) {

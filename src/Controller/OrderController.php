@@ -45,7 +45,7 @@ class OrderController extends AbstractController
         $currentUser = $this->getUser();
 
         return $this->render('Order/orders.html.twig', [
-            "currentUser" => $currentUser
+            'orders'      => $currentUser->getOrders()
         ]);
     }
     #[Route('/order/{idOrder}', name: 'app_order')]

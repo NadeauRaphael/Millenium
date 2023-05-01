@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="{{asset('Styles/custom.css')}}">
+<link rel="stylesheet" href="{{asset('Styles/templatemo.css')}}">
 <nav class="navbar navbar-expand-lg navbar-light shadow">
 	<div class="container d-flex justify-content-between align-items-center">
 		<a class="navbar-brand text-success logo h1 align-self-center" href="{{path('Catalog',{}) }}">
@@ -22,7 +24,21 @@
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('app_orders') }}">Orders</a>
 						</li>
+						{% if is_granted('ROLE_ADMIN') %}
+							<li class="nav-item">
+								<div class="dropdown">
+									<a class="dropbtn nav-link">Admin</a>
+									<div class="dropdown-content">
+										<a href="{{ path('admin_category') }}">Categories</a>
+										<a href="{{ path('admin_product') }}">Add Product</a>
+										<a href="{{ path('admin_product') }}">Products</a>
+										<a href="{{ path('admin_orders') }}">Orders</a>
+									</div>
+								</div>
+							</li>
+						{% endif %}
 					{% endif %}
+
 				</ul>
 			</div>
 			<div class="navbar align-self-center d-flex">
