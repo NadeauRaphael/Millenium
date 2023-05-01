@@ -2,17 +2,43 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Entity\Order;
+use App\Form\CategoryCollection;
+use App\Form\CategoryCollectionFormType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-    #[Route('/admin/category', name: 'admin_category')]
-    public function addCategory(): Response
+    private $em = null;
+
+    public function __construct(EntityManagerInterface $em)
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+        $this->em = $em;
+    }
+    #[Route('/admin/category', name: 'admin_category')]
+    public function addCategory(Request $request): Response
+    {
+        $categories = $this->em->getRepository(Category::class)->findAll();
+        $categoriesCollection = new CategoryCollection($categories);
+        $formCategories = $this->createForm(CategoryCollectionFormType::class,$categoriesCollection);
+
+        $formCategories->handleRequest($request);
+
+        if($formCategories->isSubmitted() && $formCategories->isValid()){
+            $newCollectionItems = $formCategories->getData()->getCategories();
+            foreach ($newCollectionItems as $newItem) {
+                $this->em->persist($newItem);
+            }
+            $this->em->flush();
+        }
+
+        return $this->render('admin/categories.html.twig', [
+            'formCategories' => $formCategories
         ]);
     }
     #[Route('/admin/updateCategory', name: 'admin_updateCategory')]
@@ -32,8 +58,9 @@ class AdminController extends AbstractController
     #[Route('/admin/orders', name: 'admin_orders')]
     public function orders(): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+        $orders = $this->em->getRepository(Order::class)->findAll();
+        return $this->render('Order/orders.html.twig', [
+            'orders'      => $orders
         ]);
     }
 }
