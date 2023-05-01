@@ -53,10 +53,7 @@ class OrderController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $order = $this->em->getRepository(Order::class)->find($idOrder);
-        if($order == null){
-            return $this->redirectToRoute('app_orders');
-        }
-        if($order->getClient() != $this->getUser()){
+        if( $order == null  || !$order->isMine($this->getUser())){
             return $this->redirectToRoute('app_profile');
         }
         return $this->render('Order/order.html.twig', [
