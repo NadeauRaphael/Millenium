@@ -44,9 +44,7 @@ class OrderController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $currentUser = $this->getUser();
 
-        return $this->render('Order/orders.html.twig', [
-            "currentUser" => $currentUser
-        ]);
+        return $this->render('Order/orders.html.twig', []);
     }
     #[Route('/order/{idOrder}', name: 'app_order')]
     public function order($idOrder,Request $request)
