@@ -31,12 +31,12 @@ class Category
         return $this->category;
     }
 
-    // public function setCategory(string $category): self
-    // {
-    //     $this->category = $category;
+    public function setCategory(string $category): self
+    {
+        $this->category = $category;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
     public function getProduct(): Collection {
         return $this->product;

@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Order;
+use App\Entity\Product;
 use App\Form\CategoryCollection;
 use App\Form\CategoryCollectionFormType;
+use App\Form\ProductFormType;
+use App\Form\UpdateProductFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,18 +44,44 @@ class AdminController extends AbstractController
             'formCategories' => $formCategories
         ]);
     }
-    #[Route('/admin/updateCategory', name: 'admin_updateCategory')]
-    public function updatecategory(): Response
+    #[Route('/admin/addProduct', name: 'admin_addProduct')]
+    public function addProduct(Request $request): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+        $product = new Product();
+        $productForm = $this->createForm(ProductFormType::class,$product);
+
+        $productForm->handleRequest($request);
+        if($productForm->isSubmitted() && $productForm->isValid()){
+            $this->em->persist($product);
+            $this->em->flush();
+        }
+        return $this->render('admin/product.html.twig', [
+            'formProduct' => $productForm->createView(),
+            'flagUpdateProduct' => false
         ]);
     }
-    #[Route('/admin/product', name: 'admin_product')]
-    public function addProduct(): Response
+    #[Route('/admin/updateProduct/{idProduct}', name: 'admin_updateProduct')]
+    public function updateProduct($idProduct,Request $request): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+        $product = $this->em->getRepository(Product::class)->find($idProduct);
+        $productForm = $this->createForm(ProductFormType::class,$product);
+
+        $productForm->handleRequest($request);
+        if($productForm->isSubmitted() && $productForm->isValid()){
+            $this->em->persist($product);
+            $this->em->flush();
+        }
+        return $this->render('admin/product.html.twig', [
+            'formProduct' => $productForm->createView(),
+            'flagUpdateProduct' => true
+        ]);
+    }
+    #[Route('/admin/products', name: 'admin_products')]
+    public function product(): Response
+    {
+        $products = $this->em->getRepository(Product::class)->findAll();
+        return $this->render('admin/products.html.twig', [
+            'products' => $products
         ]);
     }
     #[Route('/admin/orders', name: 'admin_orders')]

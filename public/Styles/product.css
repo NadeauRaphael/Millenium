@@ -1,0 +1,13 @@
+.form-input-bg{
+    background-color: #f5f6f7;
+}
+main{
+    background-color: #f5f6f7;
+}
+.btnCreateProduct {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    width: 200px;
+}

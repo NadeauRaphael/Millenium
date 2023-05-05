@@ -1,0 +1,62 @@
+{% extends 'core/base.html.twig' %}
+{% form_theme formProduct 'bootstrap_5_layout.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('Styles/product.css')}}">
+{% endblock %}
+{% block content %}
+	<div class="row mb-5">
+		<div class="col-lg-8 mx-auto">
+			{{ form_start(formProduct, {'attr': {'class': 'needs-validation-register', 'novalidate': 'novalidate' }}) }}
+			<div class="card text-black mt-5 shadow-2-strong " style="border-radius: 15px;">
+				<div class="card-body p-md-5">
+					<h1 class="mb-2 pb-2 pb-md-0 mb-md-4 text-center text-success ">
+						{% if flagUpdateProduct %}
+							Update Product
+						{% else %}
+							New Product
+						{% endif %}
+					</h1>
+					<hr>
+					<div class="row">
+						<div class="col-6">
+							{{ form_row(formProduct.name) }}
+						</div>
+						<div class="col-6">
+							{{ form_row(formProduct.category) }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							{{ form_row(formProduct.stockQuantity) }}
+						</div>
+						<div class="col-6">
+							{{ form_row(formProduct.price) }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							{{ form_row(formProduct.description) }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							{{ form_row(formProduct.imgPath) }}
+						</div>
+					</div>
+					<div class="d-flex justify-content-center">
+						{% if flagUpdateProduct %}
+							{{ form_row(formProduct.create, {'label': 'Update'}) }}
+						{% else %}
+							{{ form_row(formProduct.create, {'label': 'Create'}) }}
+						{% endif %}
+					</div>
+					{{ form_end(formProduct) }}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	<script defer src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.16/dist/jquery.mask.min.js"></script>
+	<script defer src="{{ asset('scripts/product.js')}}"></script>
+{% endblock %}

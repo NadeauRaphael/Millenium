@@ -1,0 +1,47 @@
+{% extends 'core/base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('Styles/order.css')}}">
+{% endblock %}
+{% block content %}
+	<div class="row">
+		<div class="card text-black my-3 shadow-2-strong card-table" style="border-radius: 15px;">
+			<div class="card-body px-md-5">
+				<h1 class="mb-2 text-center text-success ">Products</h1>
+				<hr>
+				<div class="col-8 mx-auto">
+					{% if products| length > 0 %}
+
+						<table class="table text-center table-wrap table-custom table-scroll">
+							<thead style="background-color: #f5f6f7;">
+								<th># Product</th>
+								<th>Name</th>
+								<th>Category</th>
+								<th>Price</th>
+								<th>Details</th>
+							</thead>
+							<tbody>
+								{% for product in products %}
+									<tr>
+										<th scope="row ">{{ product.idProduct }}</th>
+										<th>{{ product.name}}</th>
+										<th>{{ product.Category.category}}</th>
+										<th class="text-success">
+											{{product.price | number_format(2, ',', ' ')}} $
+										</th>
+										<th>
+											<a href="{{ path('admin_updateProduct',{ idProduct: product.idProduct }) }}" class="text-muted">
+												<i class="fas fa-pen-to-square text-info"></i>
+											</a>
+										</th>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					{% else %}
+					{% endif %}
+
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
