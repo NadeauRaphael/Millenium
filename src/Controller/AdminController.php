@@ -104,7 +104,6 @@ class AdminController extends AbstractController
             $originalFileName = pathinfo($productPicture->getClientOriginalName(), PATHINFO_FILENAME);
             $safeFileName = $slugger->slug($originalFileName);
             $newFileName = $safeFileName . "-" . uniqid() . $productPicture->guessExtension();
-            $category = $product->getCategory();
             try {
                 $productPicture->move($this->getParameter('profile_picture_directory'), $newFileName);
                 $product->setImgPath("/img/product/" . $newFileName);
