@@ -52,7 +52,7 @@ class OrderController extends AbstractController
     public function order($idOrder, Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        
+        $state = $request->request->get('_state');
         $order = $this->em->getRepository(Order::class)->find($idOrder);
         if (!$this->isGranted('ROLE_ADMIN')) {
             if ($order == null) {
@@ -61,6 +61,11 @@ class OrderController extends AbstractController
             if ($order->getClient() != $this->getUser()) {
                 return $this->redirectToRoute('app_profile');
             }
+        }
+        if($state){
+            $order->setState($state);
+            $this->em->persist($order);
+            $this->em->flush();
         }
         return $this->render('Order/order.html.twig', [
             "order" => $order

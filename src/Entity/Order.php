@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Core\Constants;
 use App\Repository\OrderRepository;
+use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -48,7 +49,7 @@ class Order
 
     public function __construct(string $paymentIntent,Client $client,Cart $cart)
     {
-        $this->orderDate = date_create();
+        $this->orderDate = new \DateTime();
         $this->deliveryDate = null;
         $this->rateTPS = Constants::TPS;
         $this->rateTVQ = Constants::TVQ;
@@ -101,7 +102,12 @@ class Order
     public function setState(string $state): self
     {
         $this->state = $state;
-
+        if($state == "Delivered"){
+            $this->deliveryDate = new \DateTime();
+        }
+        else{
+            $this->deliveryDate = null;
+        }
         return $this;
     }
     public function getStripeIntent(): ?string

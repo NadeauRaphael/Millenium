@@ -12,10 +12,10 @@
 						<div class="col-2 offset-4 text-end">
 							<form action="{{ path('app_order',{ idOrder: order.idOrder }) }}" id="formStateUpdate" method="post">
 								<select class="form-control form-input-bg" id="state" name="_state">
-									<option value="In Preparation" {% if order.state == "In Preparation" %}selected{% endif %}>In Preparation</option>
-									<option value="Shipped" {% if order.state == "Shipped" %}selected{% endif %}>Shipped</option>
-									<option value="In Transit" {% if order.state == "In Transit" %}selected{% endif %}>In Transit</option>
-									<option value="Delivered" {% if order.state == "Delivered"%}selected{% endif %}>Delivered</option>
+									<option value="In Preparation" {% if order.state == "In Preparation" %} selected {% endif %}>In Preparation</option>
+									<option value="Shipped" {% if order.state == "Shipped" %} selected {% endif %}>Shipped</option>
+									<option value="In Transit" {% if order.state == "In Transit" %} selected {% endif %}>In Transit</option>
+									<option value="Delivered" {% if order.state == "Delivered"%} selected {% endif %}>Delivered</option>
 								</select>
 							</form>
 						</div>
@@ -49,13 +49,19 @@
 										<div class="col-6">
 											<b>Order Date</b>
 										</div>
-										<div class="col-6 text-end">{{ order.orderDate|date("Y-m-d h:i:s") }}</div>
+										<div class="col-6 text-end">{{ order.orderDate|date("Y-m-d H:i:s",'America/Toronto') }}</div>
 									</div>
 									<div class="row">
 										<div class="col-6">
 											<b>Delivery Date</b>
 										</div>
-										<div class="col-6 text-end">Coming soon</div>
+										<div class="col-6 text-end">
+											{% if order.DeliveryDate %}
+												{{ order.DeliveryDate|date("Y-m-d H:i:s",'America/Toronto') }}
+												{% else %}
+												Coming Soon!
+											{% endif %}
+										</div>
 									</div>
 								</div>
 							</div>
