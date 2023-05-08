@@ -30,14 +30,14 @@ class OrderController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->initSession($request);
-        if($this->cart->isEmpty()){
+        if ($this->cart->isEmpty()) {
             return $this->redirectToRoute('app_cart');
         }
         return $this->render('Order/Review.html.twig', [
             'cart' => $this->cart
         ]);
     }
-    
+
     #[Route('/orders', name: 'app_orders')]
     public function orders()
     {
@@ -49,15 +49,18 @@ class OrderController extends AbstractController
         ]);
     }
     #[Route('/order/{idOrder}', name: 'app_order')]
-    public function order($idOrder,Request $request)
+    public function order($idOrder, Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
         $order = $this->em->getRepository(Order::class)->find($idOrder);
-        if($order == null){
-            return $this->redirectToRoute('app_orders');
-        }
-        if($order->getClient() != $this->getUser()){
-            return $this->redirectToRoute('app_profile');
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            if ($order == null) {
+                return $this->redirectToRoute('app_orders');
+            }
+            if ($order->getClient() != $this->getUser()) {
+                return $this->redirectToRoute('app_profile');
+            }
         }
         return $this->render('Order/order.html.twig', [
             "order" => $order
@@ -99,23 +102,23 @@ class OrderController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->initSession($request);
         $client = $this->getUser();
-        $msgErr="";
+        $msgErr = "";
         try {
             $stripe = new \Stripe\StripeClient($_ENV["STRIPE_SECRET"]);
             $stripeSessionId = $request->query->get('stripe_id');
             $sessionStripe = $stripe->checkout->sessions->retrieve($stripeSessionId);
             // Payment intent to save in BD
             $paymentIntent = $sessionStripe->payment_intent;
-            $order = new Order($paymentIntent, $client,$this->cart);
+            $order = new Order($paymentIntent, $client, $this->cart);
             foreach ($order->getPurchases() as $purchase) {
-                 //Merge Purchase
-                 $newProduct = $this->em->merge($purchase->getProduct());
+                //Merge Purchase
+                $newProduct = $this->em->merge($purchase->getProduct());
 
-                 if(!($newProduct->Sold($purchase->getQuantity()))){
-                    $msgErr .= 'Product '.$newProduct->getName().' is out of stock <br>';
-                 }
-                 $purchase->setProduct($newProduct);
-                 $order->addPurchase($purchase);   
+                if (!($newProduct->Sold($purchase->getQuantity()))) {
+                    $msgErr .= 'Product ' . $newProduct->getName() . ' is out of stock <br>';
+                }
+                $purchase->setProduct($newProduct);
+                $order->addPurchase($purchase);
             }
             $order->inPreparation();
             $this->em->persist($order);
@@ -123,17 +126,16 @@ class OrderController extends AbstractController
             $this->cart->empty();
 
             // Product out of stock
-            if($msgErr != ""){
+            if ($msgErr != "") {
                 $this->addFlash(
                     'update',
-                    new Notification('Out of stock', $msgErr . 'The order number ' . $order->getIdOrder(). " will be delivered as soon as the product come back in stock" , NotificationColor::INFO)
-                ); 
-            }
-            else{
+                    new Notification('Out of stock', $msgErr . 'The order number ' . $order->getIdOrder() . " will be delivered as soon as the product come back in stock", NotificationColor::INFO)
+                );
+            } else {
                 $this->addFlash(
                     'update',
-                    new Notification('Success', "The order ".$order->getIdOrder()." was proceded, will be delivered soon" , NotificationColor::SUCCESS)
-                ); 
+                    new Notification('Success', "The order " . $order->getIdOrder() . " was proceded, will be delivered soon", NotificationColor::SUCCESS)
+                );
             }
         } catch (\Exception $e) {
             $this->addFlash(
@@ -142,7 +144,7 @@ class OrderController extends AbstractController
             );
             return $this->redirectToRoute('app_cart');
         }
-        return $this->redirectToRoute('app_order',['idOrder' => $order->getIdOrder()]);
+        return $this->redirectToRoute('app_order', ['idOrder' => $order->getIdOrder()]);
     }
 
     #[Route('/stripe-cancel', name: 'stripe_cancel')]
@@ -154,7 +156,7 @@ class OrderController extends AbstractController
         );
         return $this->redirectToRoute('app_cart');
     }
-    
+
     public function initSession(Request $request)
     {
         $session = $request->getSession();

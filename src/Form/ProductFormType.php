@@ -4,11 +4,13 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\Product;
+use phpDocumentor\Reflection\PseudoTypes\False_;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -17,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ProductFormType extends AbstractType
 {
@@ -43,10 +46,21 @@ class ProductFormType extends AbstractType
             'label' => 'Description',
             'attr' => ['class' => 'form-input-bg']
         ])
-        ->add('imgPath',TextType::class,[
+        ->add('image',FileType::class,[
             'required' => false,
             'label' => 'Product Image',
-            'attr' => ['class' => 'form-input-bg']
+            'mapped' => false,
+            'attr' => ['class' => 'form-input-bg'],
+            'constraints' => [
+                new File([
+                    'maxSize' => '1024k',
+                    'mimeTypes' => [
+                        'image/png',
+                        'image/jpeg'
+                    ],
+                    'mimeTypesMessage' => 'Upload a valid image'
+                ])
+            ]
         ])
         ->add('category',EntityType::class,[
             'required' => true,

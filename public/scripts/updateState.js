@@ -1,0 +1,3 @@
+$("#formStateUpdate").change(()=>{
+    $("#formStateUpdate").submit();
+})

@@ -8,7 +8,20 @@
 			<div class="card-body px-md-5">
 				<div class="row">
 					<h4 class="col-6">Order #{{ order.idOrder }}</h4>
-					<h4 class="col-6 text-end">{{ order.state }}</h4>
+					{% if is_granted("ROLE_ADMIN") %}
+						<div class="col-2 offset-4 text-end">
+							<form action="{{ path('app_order',{ idOrder: order.idOrder }) }}" id="formStateUpdate" method="post">
+								<select class="form-control form-input-bg" id="state" name="_state">
+									<option value="In Preparation" {% if order.state == "In Preparation" %}selected{% endif %}>In Preparation</option>
+									<option value="Shipped" {% if order.state == "Shipped" %}selected{% endif %}>Shipped</option>
+									<option value="In Transit" {% if order.state == "In Transit" %}selected{% endif %}>In Transit</option>
+									<option value="Delivered" {% if order.state == "Delivered"%}selected{% endif %}>Delivered</option>
+								</select>
+							</form>
+						</div>
+					{% else %}
+						<h4 class="col-6 text-end">{{ order.state }}</h4>
+					{% endif %}
 				</div>
 				<hr class="mt-1">
 				<div class="container">
@@ -20,20 +33,28 @@
 							<div class="text-black my-3 shadow-2-strong  col card-info card" style="border-radius: 10px;">
 								<div class="card-body">
 									<div class="row">
-										<div class="col-6 label"><b># Order</b></div>
+										<div class="col-6 label">
+											<b># Order</b>
+										</div>
 										<div class="col-6 text-end">{{ order.idOrder }}</div>
 									</div>
 									<div class="row">
-										<div class="col-6"><b>Number of items</b></div>
+										<div class="col-6">
+											<b>Number of items</b>
+										</div>
 										<div class="col-6 text-end">{{ order.Purchases.count() }}
 											Items</div>
 									</div>
 									<div class="row">
-										<div class="col-6"><b>Order Date</b></div>
-										<div class="col-6 text-end">{{ order.orderDate|date("Y-m-d h:m:s") }}</div>
+										<div class="col-6">
+											<b>Order Date</b>
+										</div>
+										<div class="col-6 text-end">{{ order.orderDate|date("Y-m-d h:i:s") }}</div>
 									</div>
 									<div class="row">
-										<div class="col-6"><b>Delivery Date</b></div>
+										<div class="col-6">
+											<b>Delivery Date</b>
+										</div>
 										<div class="col-6 text-end">Coming soon</div>
 									</div>
 								</div>
@@ -43,20 +64,28 @@
 							<div class="text-black my-3 shadow-2-strong col card-info card " style="border-radius: 10px;">
 								<div class="card-body">
 									<div class="row">
-										<div class="col-6 label"><b>SubTotal</b></div>
+										<div class="col-6 label">
+											<b>SubTotal</b>
+										</div>
 										<div class="col-6 text-end">{{  order.getSubtotal() | number_format(2, ',', ' ')}}
 											$</div>
 									</div>
 									<div class="row">
-										<div class="col-6"><b>Rabais</b></div>
+										<div class="col-6">
+											<b>Rabais</b>
+										</div>
 										<div class="col-6 text-end">0,00$</div>
 									</div>
 									<div class="row">
-										<div class="col-6"><b>Delivery Fee</b></div>
+										<div class="col-6">
+											<b>Delivery Fee</b>
+										</div>
 										<div class="col-6 text-end">{{ order.deliveryFee | number_format(2, ',', ' ')}}</div>
 									</div>
 									<div class="row">
-										<div class="col-6"><b>Total (With taxe)</b></div>
+										<div class="col-6">
+											<b>Total (With taxe)</b>
+										</div>
 										<div class="col-6 text-end">{{ order.getTotal()| number_format(2, ',', ' ')}}
 											$</div>
 									</div>
@@ -113,4 +142,7 @@
 			</div>
 		</div>
 	</div>
+{% endblock %}
+{% block javascripts %}
+	<script defer src="{{ asset('scripts/updateState.js')}}"></script>
 {% endblock %}
