@@ -11,7 +11,7 @@
 					{% if is_granted("ROLE_ADMIN") %}
 						<div class="col-2 offset-4 text-end">
 							<form action="{{ path('app_order',{ idOrder: order.idOrder }) }}" id="formStateUpdate" method="post">
-								<select class="form-control form-input-bg" id="state" name="_state">
+								<select class="form-select form-input-bg" id="state" name="_state">
 									<option value="In Preparation" {% if order.state == "In Preparation" %} selected {% endif %}>In Preparation</option>
 									<option value="Shipped" {% if order.state == "Shipped" %} selected {% endif %}>Shipped</option>
 									<option value="In Transit" {% if order.state == "In Transit" %} selected {% endif %}>In Transit</option>
