@@ -39,7 +39,14 @@
 							</tbody>
 						</table>
 					{% else %}
-						<h3 class="text-center">No orders have been made with this account, visit our product <br> <a href="{{path('Catalog',{}) }}">here!</a></h1>
+						{% if app.request.requesturi == "/admin/orders" %}
+							<h3 class="text-center">No orders have been made.</h3>
+						{% else %}
+							<h3 class="text-center">No orders have been made with this account, visit our product
+								<br>
+								<a href="{{path('Catalog',{}) }}">here!</a>
+							</h3>
+						{% endif %}
 					{% endif %}
 
 				</div>
