@@ -94,7 +94,7 @@ class AdminController extends AbstractController
     public function orders(): Response
     {
         $orders = $this->em->getRepository(Order::class)->findAll();
-        return $this->render('Order/orders.html.twig', [
+        return $this->render('order/orders.html.twig', [
             'orders'      => $orders
         ]);
     }
