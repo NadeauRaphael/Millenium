@@ -75,6 +75,8 @@ class AdminController extends AbstractController
         if ($productForm->isSubmitted() && $productForm->isValid()) {
             $productImage = $productForm->get('image')->getData();
             $this->HandleProductImage($productImage, $product, $slugger);
+            $this->em->persist($product);
+            $this->em->flush();
         }
         return $this->render('admin/product.html.twig', [
             'formProduct' => $productForm->createView()
@@ -105,8 +107,6 @@ class AdminController extends AbstractController
             try {
                 $productPicture->move($this->getParameter('profile_picture_directory'), $newFileName);
                 $product->setImgPath("/img/product/" . $newFileName);
-                $this->em->persist($product);
-                $this->em->flush();
             } catch (FileException $e) {
             } catch (ORMException) {
             }
