@@ -55,11 +55,8 @@ class OrderController extends AbstractController
         $state = $request->request->get('_state');
         $order = $this->em->getRepository(Order::class)->find($idOrder);
         if (!$this->isGranted('ROLE_ADMIN')) {
-            if ($order == null) {
+            if( $order == null  || !$order->isMine($this->getUser())){
                 return $this->redirectToRoute('app_orders');
-            }
-            if ($order->getClient() != $this->getUser()) {
-                return $this->redirectToRoute('app_profile');
             }
         }
         if($state){
@@ -125,7 +122,6 @@ class OrderController extends AbstractController
                 $purchase->setProduct($newProduct);
                 $order->addPurchase($purchase);
             }
-            $order->inPreparation();
             $this->em->persist($order);
             $this->em->flush();
             $this->cart->empty();

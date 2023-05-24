@@ -151,4 +151,10 @@ class Order
 
         return $this;
     }
+    public function isMine($user){
+        if($this->client != $user){
+            return false;
+        }
+        return true;
+    }
 }
