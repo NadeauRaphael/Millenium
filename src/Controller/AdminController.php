@@ -57,9 +57,9 @@ class AdminController extends AbstractController
         $productForm->handleRequest($request);
         if ($productForm->isSubmitted() && $productForm->isValid()) {
             $productImage = $productForm->get('image')->getData();
-            if (!$productImage) {
-                $this->HandleProductImage($productImage, $product, $slugger);
-            }
+            $this->HandleProductImage($productImage, $product, $slugger);
+            $this->em->persist($product);
+            $this->em->flush();
         }
         return $this->render('admin/product.html.twig', [
             'formProduct' => $productForm->createView()
@@ -74,9 +74,7 @@ class AdminController extends AbstractController
         $productForm->handleRequest($request);
         if ($productForm->isSubmitted() && $productForm->isValid()) {
             $productImage = $productForm->get('image')->getData();
-            if (!$productImage) {
-                $this->HandleProductImage($productImage, $product, $slugger);
-            }
+            $this->HandleProductImage($productImage, $product, $slugger);
         }
         return $this->render('admin/product.html.twig', [
             'formProduct' => $productForm->createView()
